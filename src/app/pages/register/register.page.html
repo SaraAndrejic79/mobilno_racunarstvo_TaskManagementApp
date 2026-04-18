@@ -1,0 +1,92 @@
+<ion-content class="ion-padding">
+  <div class="auth-container">
+
+    <div class="login-box">
+
+      <div class="logo-block">
+        <img src="assets/logo.png" class="logo-img" alt="Taskly logo" />
+        <h1 class="app-name">Kreiraj nalog</h1>
+      </div>
+
+      <form [formGroup]="registerForm" (ngSubmit)="onRegister()">
+
+        <div class="input-block">
+          <label class="input-label">Ime</label>
+          <ion-input
+            formControlName="name"
+            type="text"
+            placeholder="Ana Petrović"
+            class="custom-input"
+          ></ion-input>
+          <div class="error-msg"
+            *ngIf="registerForm.get('name')?.invalid && registerForm.get('name')?.touched">
+            Unesite vaše ime
+          </div>
+        </div>
+
+        <div class="input-block">
+          <label class="input-label">Email</label>
+          <ion-input
+            formControlName="email"
+            type="email"
+            placeholder="ana@email.com"
+            class="custom-input"
+          ></ion-input>
+          <div class="error-msg"
+            *ngIf="registerForm.get('email')?.invalid && registerForm.get('email')?.touched">
+            Unesite ispravan email
+          </div>
+        </div>
+
+        <div class="input-block">
+          <label class="input-label">Lozinka</label>
+          <ion-input
+            formControlName="password"
+            type="password"
+            placeholder="min. 6 karaktera"
+            class="custom-input"
+          ></ion-input>
+          <div class="error-msg"
+            *ngIf="registerForm.get('password')?.invalid && registerForm.get('password')?.touched">
+            Lozinka mora imati min. 6 karaktera
+          </div>
+        </div>
+
+        <div class="input-block">
+          <label class="input-label">Potvrdi lozinku</label>
+          <ion-input
+            formControlName="confirmPassword"
+            type="password"
+            placeholder="••••••••"
+            class="custom-input"
+          ></ion-input>
+         <!-- prazno -->
+<div *ngIf="registerForm.get('confirmPassword')?.touched && !registerForm.get('confirmPassword')?.value">
+  Unesi potvrdu lozinke
+</div>
+
+<!-- mismatch -->
+<div *ngIf="registerForm.hasError('mismatch') && registerForm.get('confirmPassword')?.touched">
+  Lozinke se ne poklapaju
+</div> </div>
+
+        <div class="error-banner" *ngIf="errorMsg">{{ errorMsg }}</div>
+
+        <ion-button
+          class="btn-primary"
+          type="submit"
+          [disabled]="registerForm.invalid || isLoading"
+        >
+          <ion-spinner *ngIf="isLoading" name="crescent"></ion-spinner>
+          <span *ngIf="!isLoading">Registruj se</span>
+        </ion-button>
+
+      </form>
+
+      <p class="switch-auth" style="margin-top: 24px;">
+        Već imaš nalog?
+        <span class="link" (click)="goToLogin()">Prijavi se →</span>
+      </p>
+
+    </div> </div>
+</ion-content>

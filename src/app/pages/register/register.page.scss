@@ -1,0 +1,171 @@
+$neon-pink: #ff8fa3;
+$dark-bg: #0e0e0e;
+$input-bg: transparent;
+
+.auth-container {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh; // Da popuni ceo ekran
+  background-color: $dark-bg !important;
+  justify-content: center;
+  align-items: center;
+  padding: 2rem 1rem;
+}
+
+.logo-block {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-bottom: 40px;
+}
+
+.login-box {
+  background: transparent;
+  border: 1px solid $neon-pink;
+  border-radius: 16px;
+  box-shadow: 0 0 20px rgba(255, 143, 163, 0.3); // Roze sjaj
+  padding: 2rem 2.5rem;
+  text-align: center;
+  width: 100%;
+  max-width: 350px; // Da bude uzano kao na slici
+}
+
+@keyframes pulseGlow {
+  0% { filter: drop-shadow(0 0 5px #ff8fa3) drop-shadow(0 0 10px #ff8fa3); }
+  50% { filter: drop-shadow(0 0 15px #ff4f7a) drop-shadow(0 0 25px #ff4f7a); }
+  100% { filter: drop-shadow(0 0 5px #ff8fa3) drop-shadow(0 0 10px #ff8fa3); }
+}
+.logo-img {
+ width: 12rem;
+  height: 12rem;
+  margin-bottom: 0.5rem;
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+  animation: pulseGlow 2.5s infinite ease-in-out;
+}
+
+.app-name {
+  font-size: 28px;
+  font-weight: 700;
+  color: var(--txt);
+  margin: 0;
+  letter-spacing: -0.5px;
+  
+}
+
+.app-sub {
+  font-size: 13px;
+  color: var(--txt3);
+  margin: 6px 0 0;
+}
+
+.input-block {
+  margin-bottom: 16px;
+}
+
+.input-label {
+  display: block;
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--txt3);
+  text-transform: uppercase;
+  letter-spacing: 0.07em;
+  margin-bottom: 6px;
+}
+.custom-input {
+  --background: transparent;
+  --color: #fff;
+  --placeholder-color: #ccc;
+  border: 1px solid $neon-pink !important; // Tanak roze border
+  border-radius: 10px;
+  margin-bottom: 1rem;
+  
+  &:focus-within {
+    box-shadow: 0 0 10px rgba(255, 143, 163, 0.4); // Sjaj kad klikneš
+  }
+}
+
+ion-input.ng-touched + .error-msg {
+  display: block;
+}
+
+.error-msg {
+  font-size: 11px;
+  color: #ff6060;
+  margin-top: 5px;
+  padding-left: 2px;
+}
+
+.error-banner {
+  background: rgba(255, 80, 80, 0.1);
+  border: 1px solid rgba(255, 80, 80, 0.3);
+  border-radius: 10px;
+  padding: 10px 14px;
+  font-size: 13px;
+  color: #ff6060;
+  margin-bottom: 14px;
+  text-align: center;
+
+}
+.btn-primary {
+  --background: transparent;
+  --color: $neon-pink;
+  --border-color: $neon-pink;
+  --border-style: solid;
+  --border-width: 1px;
+  --border-radius: 8px;
+  
+  width: auto;
+  min-width: 120px;
+  margin: 1.5rem auto 0;
+  font-weight: 600;
+  transition: all 0.2s ease;
+
+  &:hover {
+    background-color: rgba(255, 143, 163, 0.15);
+    box-shadow: 0 0 12px rgba(255, 143, 163, 0.6);
+    transform: scale(1.03);
+  }
+}
+
+.divider {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin: 24px 0;
+  color: var(--txt3);
+  font-size: 12px;
+
+  &::before, &::after {
+    content: '';
+    flex: 1;
+    height: 1px;
+    background: var(--border);
+  }
+}
+
+.switch-auth {
+  text-align: center;
+  font-size: 13px;
+  color: var(--txt3);
+  margin: 0;
+}
+
+.link {
+  color: var(--pink2);
+  font-weight: 600;
+  cursor: pointer;
+}
+
+@media (min-width: 576px) {
+  .auth-container {
+    background: var(--bg-card); // Ili neka tvoja boja
+    border-radius: 24px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+    margin-top: 60px;
+    padding: 40px;
+    min-height: auto; // Da ne ide do dna ekrana na desktopu
+  }
+}
+
