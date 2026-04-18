@@ -1,0 +1,49 @@
+<ion-content class="ion-padding">
+  <div class="auth-container">   
+    <div class="login-box"> 
+      
+      <div class="logo-block">
+        <img src="assets/logo.png" class="logo-img" alt="Taskly logo" />
+        <h1 class="app-name">Taskly</h1>
+        <p class="app-sub">Tvoj pametni planer.</p>
+      </div>
+      <!-- Povezuje HTML formu sa tvojom TS formom -->
+<!-- ngSubmit- event automatski zna da treba da pokupi sve podatke iz forme i proveri da li je sve u redu pre nego što uopšte pokuša da pošalje podatke na server. -->
+      <form [formGroup]="loginForm" (ngSubmit)="onLogin()">
+        <div class="input-block">
+          <label class="input-label">Email</label>
+                     <!-- Ovo povezuje ovaj input sa tvojom formom iz TS-a sve što korisnik unese → ide u loginForm.email-->
+          <ion-input formControlName="email" type="email" placeholder="ana@email.com" class="custom-input"></ion-input>
+         <!-- Ova zvezdica ispred ngIf znači da je ovo strukturna direktiva. Prikaži grešku SAMO ako je polje loše I korisnik ga je već dirao"-->
+          <div class="error-msg" *ngIf="loginForm.get('email')?.invalid && loginForm.get('email')?.touched">
+            Unesite ispravan email
+          </div>
+        </div>
+
+        <div class="input-block">
+          <label class="input-label">Lozinka</label>
+          <ion-input formControlName="password" type="password" placeholder="••••••••" class="custom-input"></ion-input>
+          <div class="error-msg" *ngIf="loginForm.get('password')?.invalid && loginForm.get('password')?.touched">
+            Lozinka mora imati min. 6 karaktera
+          </div>
+        </div>
+
+        <!-- interpolacija {{}} "Ubaci vrednost iz TypeScript-a u HTML" -->
+        <div class="error-banner" *ngIf="errorMsg">{{ errorMsg }}</div>
+
+        <ion-button class="btn-primary" type="submit" [disabled]="loginForm.invalid || isLoading">
+          <ion-spinner *ngIf="isLoading" name="crescent"></ion-spinner>
+          <span *ngIf="!isLoading">Prijavi se</span>
+        </ion-button>
+      </form>
+
+      <div class="divider"><span>ili</span></div>
+
+      <p class="switch-auth">
+        Nemaš nalog?
+        <span class="link" (click)="goToRegister()">Registruj se →</span>
+      </p>
+
+    </div>
+   </div>
+</ion-content>
