@@ -2,12 +2,8 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable, map } from 'rxjs';
 import { AuthService } from '../auth/auth';
+import { Category } from '../../models/category.model';
 
-export interface Category {
-  id: string;
-  name: string;
-  color: string;
-}
 
 @Injectable({ providedIn: 'root' })
 export class CategoryService {
