@@ -29,7 +29,7 @@ export class CategoryService {
       map(data => {
         if (!data) return [];
         return Object.keys(data).map(key => ({
-          ...data[key],
+          ...data[key],//: Ovo se zove Spread operator. On uzima sve iz originalnog objekta (ime i boju).
           id: key
         }));
       })

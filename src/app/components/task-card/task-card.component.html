@@ -1,0 +1,13 @@
+<div class="task-row">
+  <div class="check-box" [class.done]="task.completed" (click)="toggle()"></div>
+  <div class="task-info">
+    <p class="task-name" [class.done]="task.completed">{{ task.name }}</p>
+    <p class="task-meta">{{ task.dueTime }} · {{ task.priority }}</p>
+  </div>
+  <span class="tag" [style.color]="task.categoryColor" [style.border-color]="task.categoryColor">
+    {{ task.category }}
+  </span>
+  <div class="view-btn" (click)="view()">👁</div>
+  <div class="edit-btn" (click)="edit()">✎</div>
+  <div class="delete-btn" (click)="delete()">✕</div>
+</div>
