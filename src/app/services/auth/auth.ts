@@ -2,7 +2,6 @@ import { Injectable, inject } from '@angular/core';
 import { Auth, createUserWithEmailAndPassword, signInWithEmailAndPassword, 
   signOut, user, updateProfile, updateEmail, 
   reauthenticateWithCredential, EmailAuthProvider } from '@angular/fire/auth';
-import { Observable } from 'rxjs';
 
 @Injectable({ providedIn: 'root' })
 export class AuthService {

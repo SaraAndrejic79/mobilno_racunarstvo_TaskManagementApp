@@ -1,5 +1,4 @@
 import { Component } from '@angular/core';
-//AbstractControl → predstavlja jedno polje ili celu formu
 import { FormBuilder, FormGroup, Validators, AbstractControl, ValidationErrors } from '@angular/forms';
 import { Router } from '@angular/router';
 import { CommonModule } from '@angular/common';
@@ -9,15 +8,9 @@ import {
 } from '@ionic/angular/standalone';
 import { AuthService } from '../../services/auth/auth';
 import { ChangeDetectorRef } from '@angular/core';
-//2. Custom validator (passwordMatch)
-//(control: AbstractControl), ti kažeš: "Ovdje će ući nešto što je deo Angular forme (bilo to jedno polje ili cela grupa), i ja želim da imam moć da iz njega izvlačim podatke."
-//control: AbstractControl: Iako se zove control, ovde se zapravo prosleđuje cela tvoja FormGroup (grupa koja sadrži i password i confirmPassword).
-//ValidationErrors | null:
-   //Ako vrati null — Angular smatra da je sve u redu (validno).
-   //Ako vrati { mismatch: true } — Angular smatra da je forma neispravna i taj objekat dodaje u listu grešaka
 
 function passwordMatch(control: AbstractControl): ValidationErrors | null {
-  // 1. Izvuci cele KONTROLE, a ne samo .value
+  //uzimaš dva inputa iz forme:
   const passwordControl = control.get('password');
   const confirmPasswordControl = control.get('confirmPassword');
 
@@ -26,15 +19,12 @@ function passwordMatch(control: AbstractControl): ValidationErrors | null {
   const pw = passwordControl.value;
   const cpw = confirmPasswordControl.value;
 
-  // Ako su polja prazna, ne radi ništa (Validators.required će to rešiti)
   if (!pw || !cpw) return null;
 
   if (pw !== cpw) {
-    // 2. Postavi grešku na samu kontrolu "confirmPassword"
     confirmPasswordControl.setErrors({ mismatch: true });
     return { mismatch: true };
   } else {
-    // 3. Ako se poklapaju, obavezno očisti grešku 'mismatch' sa kontrole
     if (confirmPasswordControl.hasError('mismatch')) {
       confirmPasswordControl.setErrors(null);
     }
@@ -46,6 +36,7 @@ function passwordMatch(control: AbstractControl): ValidationErrors | null {
   selector: 'app-register',
   templateUrl: './register.page.html',
   styleUrls: ['./register.page.scss'],
+  //znači da je komponenta (ili direktiva/pipe) samostalna i NE mora da bude deklarisana u NgModule-u.
   standalone: true,
   imports: [
     CommonModule, ReactiveFormsModule,
@@ -70,6 +61,7 @@ export class RegisterPage {
   if (this.registerForm.invalid) return;
   this.isLoading = true;
   this.errorMsg = '';
+  //forsira Angular da odmah osveži UI
   this.cdr.detectChanges();
 
   const { name, email, password } = this.registerForm.value;
@@ -82,7 +74,7 @@ export class RegisterPage {
     })
     .catch(() => {
       this.isLoading = false;
-      this.errorMsg = 'Registracija nije uspela. Email možda već postoji.';
+      this.errorMsg = 'Registracija nije uspela.';
       this.cdr.detectChanges();
     });
 }

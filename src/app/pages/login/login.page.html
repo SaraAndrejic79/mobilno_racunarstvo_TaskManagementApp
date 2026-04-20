@@ -7,14 +7,10 @@
         <h1 class="app-name">Taskly</h1>
         <p class="app-sub">Tvoj pametni planer.</p>
       </div>
-      <!-- Povezuje HTML formu sa tvojom TS formom -->
-<!-- ngSubmit- event automatski zna da treba da pokupi sve podatke iz forme i proveri da li je sve u redu pre nego što uopšte pokuša da pošalje podatke na server. -->
       <form [formGroup]="loginForm" (ngSubmit)="onLogin()">
         <div class="input-block">
           <label class="input-label">Email</label>
-                     <!-- Ovo povezuje ovaj input sa tvojom formom iz TS-a sve što korisnik unese → ide u loginForm.email-->
           <ion-input formControlName="email" type="email" placeholder="ana@email.com" class="custom-input"></ion-input>
-         <!-- Ova zvezdica ispred ngIf znači da je ovo strukturna direktiva. Prikaži grešku SAMO ako je polje loše I korisnik ga je već dirao"-->
           <div class="error-msg" *ngIf="loginForm.get('email')?.invalid && loginForm.get('email')?.touched">
             Unesite ispravan email
           </div>
@@ -28,7 +24,6 @@
           </div>
         </div>
 
-        <!-- interpolacija {{}} "Ubaci vrednost iz TypeScript-a u HTML" -->
         <div class="error-banner" *ngIf="errorMsg">{{ errorMsg }}</div>
 
         <ion-button class="btn-primary" type="submit" [disabled]="loginForm.invalid || isLoading">
