@@ -1,0 +1,191 @@
+$neon-pink: #ff8fa3;
+
+ion-toolbar {
+  --background: #0e0e0e;
+  --border-color: transparent;
+}
+
+ion-content {
+  --background: #0e0e0e;
+}
+
+.header-content {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 12px 16px 8px;
+}
+
+.back-btn {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  border: 1px solid rgba(255, 143, 163, 0.3);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: $neon-pink;
+  cursor: pointer;
+  font-size: 18px;
+}
+
+.page-title {
+  font-size: 20px;
+  font-weight: 700;
+  color: #f0f0f0;
+  margin: 0;
+}
+
+.tasks-container {
+  padding: 16px 16px 100px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.filter-scroll {
+  display: flex;
+  gap: 8px;
+  overflow-x: auto;
+  padding-bottom: 4px;
+  &::-webkit-scrollbar { display: none; }
+}
+
+.filter-pill {
+  padding: 7px 16px;
+  border-radius: 99px;
+  font-size: 13px;
+  font-weight: 600;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  color: #555;
+  cursor: pointer;
+  white-space: nowrap;
+  flex-shrink: 0;
+  transition: all 0.2s;
+
+  &.active {
+    background: rgba(255, 143, 163, 0.12);
+    border-color: $neon-pink;
+    color: $neon-pink;
+    box-shadow: 0 0 10px rgba(255, 143, 163, 0.2);
+  }
+}
+
+.cat-scroll {
+  display: flex;
+  gap: 8px;
+  overflow-x: auto;
+  padding-bottom: 4px;
+  &::-webkit-scrollbar { display: none; }
+}
+
+.cat-chip {
+  padding: 5px 12px;
+  border-radius: 99px;
+  font-size: 12px;
+  font-weight: 600;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  color: #555;
+  cursor: pointer;
+  white-space: nowrap;
+  flex-shrink: 0;
+  transition: all 0.2s;
+
+  &.active {
+    background: rgba(255, 143, 163, 0.08);
+  }
+}
+
+.task-list {
+  background: #111;
+  border: 1px solid rgba(255, 143, 163, 0.2);
+  border-radius: 16px;
+  overflow: hidden;
+}
+
+.loading-state {
+  display: flex;
+  justify-content: center;
+  padding: 40px 0;
+}
+
+.empty-state {
+  text-align: center;
+  padding: 60px 0;
+  color: #555;
+  font-size: 15px;
+}
+
+.fab-btn {
+  --background: #111;
+  --color: #{$neon-pink};
+  border: 1.5px solid $neon-pink;
+  border-radius: 50%;
+  box-shadow: 0 0 20px rgba(255, 143, 163, 0.4);
+}
+
+.results-count {
+  font-size: 12px;
+  color: #555;
+  padding: 0 2px;
+}
+
+.stat-box {
+  cursor: pointer;
+  transition: all 0.2s;
+  
+  &:active {
+    transform: scale(0.97);
+  }
+}
+
+.section-label {
+  font-size: 10px;
+  font-weight: 700;
+  color: #444;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  padding: 0 2px;
+}
+
+.separator {
+  height: 1px;
+  background: rgba(255, 143, 163, 0.1);
+   border: 1px solid rgba(255, 143, 163, 0.35);
+  box-shadow:  0 0 6px rgba(255, 143, 163, 0.6);
+  margin: 4px 0;
+}
+
+.results-count {
+  font-size: 12px;
+  color: #555;
+  padding: 0 2px;
+}
+
+.filter-scroll {
+  display: flex;
+  gap: 8px;
+  overflow-x: auto;
+  padding-bottom: 6px;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: none;
+  &::-webkit-scrollbar { display: none; }
+}
+
+.filter-pill {
+  flex-shrink: 0;  // ← ovo je ključno, sprečava smanjivanje
+}
+
+.cat-scroll {
+  display: flex;
+  gap: 8px;
+  overflow-x: auto;
+  padding-bottom: 6px;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: none;
+  &::-webkit-scrollbar { display: none; }
+}
+
+.cat-chip {
+  flex-shrink: 0;  // ← i ovo
+}

@@ -1,0 +1,72 @@
+<ion-header class="ion-no-border">
+  <ion-toolbar>
+    <div class="header-content">
+      <div class="back-btn" (click)="goBack()">←</div>
+      <h2 class="page-title">Svi zadaci</h2>
+    </div>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <div class="tasks-container">
+
+    <div class="section-label">Status</div>
+    <div class="filter-scroll">
+      <div
+        *ngFor="let f of filters"
+        class="filter-pill"
+        [class.active]="selectedFilter === f"
+        (click)="selectFilter(f)"
+      >{{ f }}</div>
+    </div>
+
+    <div class="separator"></div>
+
+    <div class="section-label">Kategorija</div>
+    <div class="cat-scroll">
+      <div
+        class="cat-chip"
+        [class.active]="selectedCategory === 'Sve'"
+        (click)="selectCategory('Sve')"
+      >Sve</div>
+      <div
+        *ngFor="let cat of categories"
+        class="cat-chip"
+        [class.active]="selectedCategory === cat.name"
+        [style.border-color]="selectedCategory === cat.name ? cat.color : ''"
+        [style.color]="selectedCategory === cat.name ? cat.color : ''"
+        (click)="selectCategory(cat.name)"
+      >{{ cat.name }}</div>
+    </div>
+
+    <div class="results-count" *ngIf="!isLoading">
+      {{ filteredTasks.length }} {{ filteredTasks.length === 1 ? 'zadatak' : 'zadataka' }}
+    </div>
+
+    <div class="loading-state" *ngIf="isLoading">
+      <ion-spinner name="crescent" style="color: #ff8fa3"></ion-spinner>
+    </div>
+
+    <div class="empty-state" *ngIf="!isLoading && filteredTasks.length === 0">
+      <p>Nema zadataka</p>
+    </div>
+
+   <div class="task-list" *ngIf="!isLoading && filteredTasks.length > 0">
+  <app-task-card
+    *ngFor="let task of filteredTasks" 
+     (onView)="viewTask($event)"
+    [task]="task"
+    (onToggle)="toggleTask($event)"
+    (onDelete)="deleteTask($event)"
+    (onEdit)="editTask($event)">
+  </app-task-card>
+</div>
+
+  </div>
+</ion-content>
+
+<ion-fab vertical="bottom" horizontal="end" slot="fixed">
+  <ion-fab-button class="fab-btn" (click)="goToAddTask()">
+    <ion-icon name="add"></ion-icon>
+  </ion-fab-button>
+</ion-fab>

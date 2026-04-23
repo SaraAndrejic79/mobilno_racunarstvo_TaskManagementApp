@@ -1,0 +1,142 @@
+<ion-header class="ion-no-border">
+  <ion-toolbar>
+    <div class="header-content">
+      <div class="back-btn" (click)="goBack()">
+        <ion-icon name="arrow-back"></ion-icon>
+      </div>
+      <h2 class="page-title">
+      {{ isViewMode ? 'Detalji zadatka' : isEditMode ? 'Izmeni task' : 'Pregled zadatka' }}
+     </h2>
+    </div>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <div class="form-container">
+
+    <form [formGroup]="taskForm">
+
+    
+      <div class="form-block">
+        <label class="form-label">Naziv taska</label>
+        <ion-input
+          formControlName="name"
+          [readonly]="isViewMode"
+          placeholder="Unesite naziv..."
+          class="custom-input"
+        ></ion-input>
+        <div class="error-msg"
+          *ngIf="taskForm.get('name')?.invalid && taskForm.get('name')?.touched">
+          Naziv je obavezan
+        </div>
+      </div>
+
+      <div class="form-block">
+        <label class="form-label">Opis (opciono)</label>
+        <ion-textarea
+          formControlName="description"
+          [readonly]="isViewMode"
+          placeholder="Dodaj opis..."
+          class="custom-input"
+          rows="3"
+        ></ion-textarea>
+      </div>
+
+      <div class="form-block">
+        <label class="form-label">Datum</label>
+        <ion-input
+          formControlName="dueDate"
+          [readonly]="isViewMode"
+          type="date"
+          class="custom-input"
+        ></ion-input>
+        <div class="error-msg"
+          *ngIf="taskForm.get('dueDate')?.invalid && taskForm.get('dueDate')?.touched">
+          Datum je obavezan
+        </div>
+      </div>
+
+      <div class="form-block">
+        <label class="form-label">Vreme(opciono)</label>
+        <ion-input
+          formControlName="dueTime"
+          [readonly]="isViewMode"
+          type="time"
+          class="custom-input"
+        ></ion-input>
+        <div class="error-msg"
+          *ngIf="taskForm.get('dueTime')?.invalid && taskForm.get('dueTime')?.touched">
+          Vreme je obavezno
+        </div>
+      </div>
+
+      <div class="form-block">
+        <label class="form-label">Prioritet</label>
+        <div class="priority-row">
+        <!-- "Dodaj klasu active-high (koja je u CSS-u crvena) SAMO ako je ta pilulica selektovana I ako je njeno ime 'Visok' -->
+
+          <div
+            *ngFor="let p of priorities"
+            class="priority-pill"
+            [class.active-high]="selectedPriority === p && p === 'Visok'"
+            [class.active-mid]="selectedPriority === p && p === 'Srednji'"
+            [class.active-low]="selectedPriority === p && p === 'Nizak'"
+           
+            (click)="selectPriority(p)"
+          >{{ p }}</div>
+        </div>
+      </div>
+
+      <div class="form-block">
+        <label class="form-label">Kategorija</label>
+       <div class="category-chips">
+  <div
+    *ngFor="let cat of categories"
+    class="chip"
+    [class.active]="selectedCategory?.id === cat.id"
+    [style.border-color]="selectedCategory?.id === cat.id ? cat.color : ''"
+    [style.color]="selectedCategory?.id === cat.id ? cat.color : ''"
+    
+    (click)="selectCategory(cat)"
+  >
+    {{ cat.name }}
+    <span class="chip-delete" (click)="deleteCategory(cat, $event)">✕</span>
+  </div>
+  <div class="chip add-chip" *ngIf="!isViewMode" (click)="toggleNewCategory()">+ Nova</div>
+</div>
+
+<div class="new-cat-box" *ngIf="showNewCategory">
+   <ion-input
+
+            [(ngModel)]="newCategoryName"
+            [ngModelOptions]="{standalone: true}"
+            placeholder="Naziv kategorije..."
+            class="custom-input small"
+    ></ion-input>
+    <div class="color-row">
+            <div
+              *ngFor="let color of colorOptions"
+              class="color-dot"
+              [style.background]="color"
+              [class.selected]="newCategoryColor === color"
+              (click)="selectColor(color)"
+            ></div>
+          </div>
+          <div class="new-cat-actions">
+            <div class="btn-cancel" (click)="toggleNewCategory()">Otkaži</div>
+            <div class="btn-save-cat" (click)="saveNewCategory()">Sačuvaj</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ERROR -->
+      <div class="error-banner" *ngIf="errorMsg">{{ errorMsg }}</div>
+
+    </form>
+ <!-- isLoading-Dok god servis čeka odgovor od baze, dugme je zaključano. Ovo je odlična zaštita od nestrpljivih korisnika koji bi kliknuli 5 puta i napravili 5 istih zadataka. -->
+    <ion-button *ngIf="!isViewMode" expand="block" class="btn-primary" (click)="onSave()" [disabled]="taskForm.invalid || isLoading">
+  <ion-spinner *ngIf="isLoading" name="crescent"></ion-spinner>
+  <span *ngIf="!isLoading">{{ isEditMode ? 'Sačuvaj izmene' : 'Sačuvaj zadatak' }}</span>
+</ion-button>
+  </div>
+</ion-content>
