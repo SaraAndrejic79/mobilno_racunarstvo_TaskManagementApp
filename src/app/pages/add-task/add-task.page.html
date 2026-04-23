@@ -5,7 +5,7 @@
         <ion-icon name="arrow-back"></ion-icon>
       </div>
       <h2 class="page-title">
-      {{ isViewMode ? 'Detalji zadatka' : isEditMode ? 'Izmeni task' : 'Kreiraj zadatak' }}
+      {{ isViewMode ? 'Detalji zadatka' : isEditMode ? 'Izmeni zadatak' : 'Kreiraj zadatak' }}
      </h2>
     </div>
   </ion-toolbar>
@@ -22,6 +22,7 @@
         <ion-input
           formControlName="name"
           [readonly]="isViewMode"
+          [style.opacity]="isViewMode ? '0.8' : '1'"
           placeholder="Unesite naziv..."
           class="custom-input"
         ></ion-input>
@@ -36,6 +37,7 @@
         <ion-textarea
           formControlName="description"
           [readonly]="isViewMode"
+          [style.opacity]="isViewMode ? '0.8' : '1'"
           placeholder="Dodaj opis..."
           class="custom-input"
           rows="3"
@@ -47,6 +49,7 @@
         <ion-input
           formControlName="dueDate"
           [readonly]="isViewMode"
+          [style.opacity]="isViewMode ? '0.8' : '1'"
           type="date"
           class="custom-input"
         ></ion-input>
@@ -61,6 +64,7 @@
         <ion-input
           formControlName="dueTime"
           [readonly]="isViewMode"
+          [style.opacity]="isViewMode ? '0.8' : '1'"
           type="time"
           class="custom-input"
         ></ion-input>
@@ -82,7 +86,10 @@
             [class.active-mid]="selectedPriority === p && p === 'Srednji'"
             [class.active-low]="selectedPriority === p && p === 'Nizak'"
            
-            (click)="selectPriority(p)"
+            (click)="!isViewMode && selectPriority(p)"
+  
+            [style.opacity]="isViewMode ? '0.7' : '1'"
+            [style.cursor]="isViewMode ? 'default' : 'pointer'"
           >{{ p }}</div>
         </div>
       </div>
@@ -97,10 +104,12 @@
     [style.border-color]="selectedCategory?.id === cat.id ? cat.color : ''"
     [style.color]="selectedCategory?.id === cat.id ? cat.color : ''"
     
-    (click)="selectCategory(cat)"
+   (click)="!isViewMode && selectCategory(cat)"
+  
+  [style.opacity]="isViewMode ? '0.8' : '1'"
   >
     {{ cat.name }}
-    <span class="chip-delete" (click)="deleteCategory(cat, $event)">✕</span>
+    <span class="chip-delete" *ngIf="!isViewMode" (click)="deleteCategory(cat, $event)">✕</span>
   </div>
   <div class="chip add-chip" *ngIf="!isViewMode" (click)="toggleNewCategory()">+ Nova</div>
 </div>

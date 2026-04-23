@@ -54,11 +54,11 @@
    <div class="task-list" *ngIf="!isLoading && filteredTasks.length > 0">
   <app-task-card
     *ngFor="let task of filteredTasks" 
-     (onView)="viewTask($event)"
     [task]="task"
     (onToggle)="toggleTask($event)"
     (onDelete)="deleteTask($event)"
-    (onEdit)="editTask($event)">
+    (onEdit)="editTask($event)"
+    (onView)="viewTask($event)">
   </app-task-card>
 </div>
 

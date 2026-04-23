@@ -68,8 +68,21 @@ ngOnInit() {
   const mode = this.route.snapshot.queryParams['mode'];
   this.isViewMode = mode === 'view';
   this.isEditMode = !!this.taskId && !this.isViewMode;
-  this.loadCategories();
-  if (this.taskId) this.loadTask();
+
+  // 1. Prvo učitaj kategorije
+  this.categoryService.getCategories().subscribe({
+    next: (cats) => {
+      this.categories = cats;
+
+      // 2. TEK SAD, kad imamo kategorije, učitaj task
+      if (this.taskId) {
+        this.loadTask();
+      } else if (cats.length > 0) {
+        // Ako je novi task, postavi prvu kategoriju kao default
+        this.selectedCategory = cats[0];
+      }
+    }
+  });
 }
   
   loadCategories() {
@@ -95,19 +108,27 @@ ngOnInit() {
         });
         //njih posebno jer nisu deo task form grupe
         this.selectedPriority = task.priority;
-        //pravi se objekat
-        this.selectedCategory = {
-          id: '',
-          name: task.category,
-          color: task.categoryColor
-        };
+        // KLJUČNA IZMENA: Tražimo kategoriju u listi postojećih kategorija
+      if (this.categories && this.categories.length > 0) {
+        const foundCategory = this.categories.find(c => c.name === task.category);
+        if (foundCategory) {
+          this.selectedCategory = foundCategory;
+        } else {
+          // Fallback: Ako kategorija više ne postoji u bazi, tek onda pravi privremeni objekat
+          this.selectedCategory = { id: '', name: task.category, color: task.categoryColor };
+        }
+      }
       }
     });
   }
 
-  selectPriority(p: string) { this.selectedPriority = p; }
+  selectPriority(p: string) { 
+    if (this.isViewMode) return;
+    this.selectedPriority = p; }
 
-  selectCategory(cat: Category) { this.selectedCategory = cat; }
+  selectCategory(cat: Category) { 
+    if (this.isViewMode) return;
+    this.selectedCategory = cat; }
 
   toggleNewCategory() {
     this.showNewCategory = !this.showNewCategory;
@@ -184,5 +205,8 @@ ngOnInit() {
     }
   }
 
-  goBack() { this.router.navigate(['/tasks']); }
+  goBack() {
+     this.router.navigate(['/tasks']);
+     this.isEditMode=false; 
+    this.isViewMode=false;}
 }

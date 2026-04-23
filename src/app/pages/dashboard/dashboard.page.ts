@@ -113,6 +113,10 @@ editTask(task: Task) {
   this.router.navigate(['/add-task', task.id]);
 }
 
+viewTask(task: Task) {
+  this.router.navigate(['/add-task', task.id], { queryParams: { mode: 'view' } });
+}
+
 toggleTask(task: Task) {
   this.taskService.toggleTask(task.id, !task.completed).subscribe({
     next: () => {
