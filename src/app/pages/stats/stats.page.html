@@ -1,0 +1,111 @@
+<ion-header class="ion-no-border">
+  <ion-toolbar>
+    <div class="header-content">
+      <div class="back-btn" (click)="goBack()">←</div>
+      <h2 class="page-title">Statistika</h2>
+    </div>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <div class="stats-container">
+
+    <div class="loading-state" *ngIf="isLoading">
+      <ion-spinner name="crescent" style="color: #ff8fa3"></ion-spinner>
+    </div>
+
+<div *ngIf="!isLoading" style="display: flex; flex-direction: column; gap: 16px;">
+
+      <div class="week-nav">
+        <div class="nav-arrow" (click)="prevWeek()">←</div>
+        <div class="week-label">{{ weekLabel }}</div>
+        <div class="nav-arrow" [class.disabled]="isCurrentWeek()" (click)="nextWeek()">→</div>
+      </div>
+
+     
+<div class="big-stats" *ngIf="totalCount > 0">
+  <div class="big-stat">
+    <span class="big-num green">{{ completedPercent }}%</span>
+    <span class="big-lbl">Završeno</span>
+  </div>
+  <div class="divider-v"></div>
+  <div class="big-stat">
+    <span class="big-num amber">{{ skippedPercent }}%</span>
+    <span class="big-lbl">Preskočeno</span>
+  </div>
+  <div class="divider-v"></div>
+  <div class="big-stat">
+    <span class="big-num red">{{ missedPercent }}%</span>
+    <span class="big-lbl">Zakasnelo</span>
+  </div>
+</div>
+
+<div class="no-data-card" *ngIf="totalCount === 0">
+  <p>Nema podataka za ovu nedelju 📭</p>
+</div>
+
+ <div class="card">
+        <div class="card-title">Dnevni pregled</div>
+        <div class="bar-chart">
+          <div class="bar-col" *ngFor="let day of dayStats">
+            <div class="bar-wrap">
+              <div
+                class="bar"
+                [style.height.px]="day.height"
+                [class.today]="isToday(day.date)"
+                [class.empty]="day.total === 0"
+              ></div>
+            </div>
+            <div class="bar-label" [class.today-label]="isToday(day.date)">{{ day.label }}</div>
+            <div class="bar-count" *ngIf="day.total > 0">{{ day.completed }}/{{ day.total }}</div>
+            <div class="bar-count" *ngIf="day.total === 0">—</div>
+          </div>
+        </div>
+ </div>
+
+ <div class="card" *ngIf="categoryStats.length > 0">
+        <div class="card-title">Po kategorijama</div>
+        <div class="cat-stats">
+          <div class="cat-stat-row" *ngFor="let cat of categoryStats">
+            <div class="cat-stat-header">
+              <span class="cat-name" [style.color]="cat.color">{{ cat.name }}</span>
+              <span class="cat-percent" [style.color]="cat.color">{{ cat.percent }}%</span>
+            </div>
+            <div class="cat-bar-bg">
+              <div
+                class="cat-bar-fill"
+                [style.width.%]="cat.percent"
+                [style.background]="cat.color"
+              ></div>
+            </div>
+            <div class="cat-sub">{{ cat.completed }} od {{ cat.total }} završeno</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="card streak-card">
+        <div class="streak-icon">🔥</div>
+        <div>
+          <div class="streak-num">{{ streak }} {{ streak === 1 ? 'dan' : 'dana' }}</div>
+          <div class="streak-lbl">uzastopnih dana sa završenim taskovima</div>
+        </div>
+      </div>
+
+     <div class="card total-card">
+        <div class="total-row">
+          <span class="total-lbl">Ukupno ove nedelje</span>
+          <span class="total-num">{{ totalCount }}</span>
+        </div>
+        <div class="total-row">
+          <span class="total-lbl">Završeno</span>
+          <span class="total-num green">{{ completedCount }}</span>
+        </div>
+        <div class="total-row">
+          <span class="total-lbl">Zakasnelo</span>
+          <span class="total-num red">{{ overdueCount }}</span>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</ion-content>
