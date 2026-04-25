@@ -1,0 +1,138 @@
+<ion-header class="ion-no-border">
+  <ion-toolbar>
+    <div class="header-content">
+      <div class="back-btn" (click)="goBack()">←</div>
+      <h2 class="page-title">Profil</h2>
+    </div>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <div class="profile-container">
+
+    <!-- AVATAR -->
+    <div class="avatar-section">
+      <div class="avatar-big">{{ userInitial }}</div>
+      <h2 class="profile-name">{{ userName }}</h2>
+      <p class="profile-email">{{ userEmail }}</p>
+    </div>
+
+   <div class="info-card">
+  <div class="card-title">Informacije o nalogu</div>
+ <div class="info-row">
+  <span class="info-label">Ime</span>
+  <div style="display:flex; align-items:center; gap:8px;">
+    <span class="info-value">{{ userName }}</span>
+    <span class="edit-email-btn" (click)="toggleEditName()">✎</span>
+  </div>
+</div>
+
+<div class="edit-email-form" *ngIf="showEditName">
+  <ion-input
+    [(ngModel)]="newName"
+    type="text"
+    placeholder="Novo ime..."
+    class="custom-input"
+  ></ion-input>
+  <div class="email-error" *ngIf="nameError">{{ nameError }}</div>
+  <div class="email-actions">
+    <div class="btn-cancel-small" (click)="toggleEditName()">Otkaži</div>
+    <div class="btn-save-small" (click)="updateName()">
+      <ion-spinner *ngIf="nameLoading" name="crescent" style="width:16px;height:16px;"></ion-spinner>
+      <span *ngIf="!nameLoading">Sačuvaj</span>
+    </div>
+  </div>
+</div>
+
+  <div class="info-row">
+    <span class="info-label">Email</span>
+    <div style="display:flex; align-items:center; gap:8px;">
+      <span class="info-value">{{ userEmail }}</span>
+      <span class="edit-email-btn" (click)="toggleEditEmail()">✎</span>
+    </div>
+  </div>
+
+  <!-- FORMA ZA IZMENU EMAILA -->
+  <div class="edit-email-form" *ngIf="showEditEmail">
+    <ion-input
+      [(ngModel)]="newEmail"
+      type="email"
+      placeholder="Novi email..."
+      class="custom-input"
+    ></ion-input>
+    <div class="email-error" *ngIf="emailError">{{ emailError }}</div>
+    <div class="email-actions">
+      <div class="btn-cancel-small" (click)="toggleEditEmail()">Otkaži</div>
+      <div class="btn-save-small" (click)="updateEmail()">
+        <ion-spinner *ngIf="emailLoading" name="crescent" style="width:16px;height:16px;"></ion-spinner>
+        <span *ngIf="!emailLoading">Sačuvaj</span>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<div class="card" *ngIf="needsReauth" style="border: 1px solid #ff8fa3;">
+  <div class="card-title" style="color: #ff8fa3;">Potrebna verifikacija</div>
+  <p class="reset-desc">Unesite vašu trenutnu lozinku kako biste potvrdili izmenu email-a.</p>
+  
+  <ion-input
+    [(ngModel)]="currentPassword"
+    type="password"
+    placeholder="Vaša lozinka..."
+    class="custom-input"
+  ></ion-input>
+
+  <div class="email-actions" style="margin-top: 10px;">
+    <div class="btn-cancel-small" (click)="needsReauth = false">Otkaži</div>
+    <div class="btn-save-small" (click)="reauthenticateAndSave()">
+      <ion-spinner *ngIf="reauthLoading" name="crescent" style="width:16px;height:16px;"></ion-spinner>
+      <span *ngIf="!reauthLoading">Potvrdi</span>
+    </div>
+  </div>
+  <div class="email-error" *ngIf="reauthError" style="margin-top: 5px;">{{ reauthError }}</div>
+</div>
+
+    <!-- RESET LOZINKE -->
+    <div class="card">
+      <div class="card-title">Bezbednost</div>
+      <p class="reset-desc">
+        Klikni dugme ispod da dobiješ email sa linkom za resetovanje lozinke.
+      </p>
+
+      <div class="success-msg" *ngIf="resetSent">
+        ✓ Email je poslat na {{ userEmail }}
+      </div>
+
+      <div class="error-msg" *ngIf="resetError">
+        {{ resetError }}
+      </div>
+
+      <ion-button
+        expand="block"
+        class="btn-reset"
+        (click)="sendPasswordReset()"
+        [disabled]="resetLoading || resetSent"
+      >
+        <ion-spinner *ngIf="resetLoading" name="crescent"></ion-spinner>
+        <span *ngIf="!resetLoading">
+          {{ resetSent ? 'Email poslat ✓' : 'Pošalji link za reset lozinke' }}
+        </span>
+      </ion-button>
+    </div>
+
+    <!-- LOGOUT -->
+    <div class="logout-btn" (click)="logout()">
+      Odjavi se
+    </div>
+
+  </div>
+</ion-content>
+
+<ion-alert
+  [isOpen]="showLogoutAlert"
+  header="Odjava"
+  message="Da li zaista želiš da se odjaviš?"
+  [buttons]="alertButtons"
+  (didDismiss)="showLogoutAlert = false"
+></ion-alert>
