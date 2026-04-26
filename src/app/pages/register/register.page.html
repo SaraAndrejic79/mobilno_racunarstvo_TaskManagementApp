@@ -61,11 +61,11 @@
             class="custom-input"
           ></ion-input>
          <!-- prazno -->
-<div *ngIf="registerForm.get('confirmPassword')?.touched && !registerForm.get('confirmPassword')?.value">
+<div class="error-msg" *ngIf="registerForm.get('confirmPassword')?.touched && !registerForm.get('confirmPassword')?.value">
   Unesi potvrdu lozinke
 </div>
 
-<div *ngIf="registerForm.hasError('mismatch') && registerForm.get('confirmPassword')?.touched">
+<div class="error-msg" *ngIf="registerForm.hasError('mismatch') && registerForm.get('confirmPassword')?.touched">
   Lozinke se ne poklapaju
 </div> </div>
 

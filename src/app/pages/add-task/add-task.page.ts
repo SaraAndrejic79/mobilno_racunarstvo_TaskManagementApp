@@ -85,16 +85,7 @@ ngOnInit() {
   });
 }
   
-  loadCategories() {
-    this.categoryService.getCategories().subscribe({
-      next: (cats) => {
-        this.categories = cats;
-        if (cats.length > 0 && !this.selectedCategory) {
-          this.selectedCategory = cats[0];
-        }
-      }
-    });
-  }
+
 
   loadTask() {
     this.taskService.getTaskById(this.taskId).subscribe({
@@ -151,20 +142,32 @@ ngOnInit() {
     });
   }
 
-  deleteCategory(cat: Category, event: Event) {
-    event.stopPropagation();
-    this.categoryService.deleteCategory(cat.id).subscribe({
-      next: () => {
-        this.categories = this.categories.filter(c => c.id !== cat.id);
-        if (this.selectedCategory?.id === cat.id) {
-          this.selectedCategory = this.categories[0] || null;
-        }
-      }
-    });
+ deleteCategory(cat: Category, event: Event) {
+  event.stopPropagation();
+
+  // Ako je ova kategorija trenutno selektovana taska u edit modu, zabrani brisanje
+  if (this.isEditMode && this.selectedCategory?.id === cat.id) {
+    this.errorMsg = 'Ne možeš obrisati kategoriju kojoj task trenutno pripada.';
+    setTimeout(() => this.errorMsg = '', 3000);
+    return;
   }
 
+  this.categoryService.deleteCategory(cat.id).subscribe({
+    next: () => {
+      this.categories = this.categories.filter(c => c.id !== cat.id);
+      if (this.selectedCategory?.id === cat.id) {
+        this.selectedCategory = this.categories[0] ?? null;
+      }
+    }
+  });
+}
+
   onSave() {
-    if (this.taskForm.invalid) return;
+     if (this.taskForm.invalid) return;
+     if (!this.selectedCategory) {
+    this.errorMsg = 'Molimo izaberite kategoriju.';
+    return;
+  }
     this.isLoading = true;
     this.errorMsg = '';
 

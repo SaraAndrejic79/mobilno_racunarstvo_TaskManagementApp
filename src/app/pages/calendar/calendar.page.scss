@@ -1,0 +1,214 @@
+$neon-pink: #ff8fa3;
+
+ion-toolbar {
+  --background: #0e0e0e;
+  --border-color: transparent;
+}
+
+ion-content {
+  --background: #0e0e0e;
+}
+
+.header-content {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 12px 16px 8px;
+}
+
+.back-btn {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  border: 1px solid rgba(255, 143, 163, 0.3);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: $neon-pink;
+  cursor: pointer;
+  font-size: 18px;
+}
+
+.page-title {
+  font-size: 20px;
+  font-weight: 700;
+  color: #f0f0f0;
+  margin: 0;
+}
+
+.cal-container {
+  padding: 16px 16px 100px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.loading-state {
+  display: flex;
+  justify-content: center;
+  padding: 60px 0;
+}
+
+/* MESEC NAVIGACIJA */
+.month-nav {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: #111;
+  border: 1px solid rgba(255, 143, 163, 0.2);
+  border-radius: 12px;
+  padding: 12px 16px;
+}
+
+.nav-arrow {
+  font-size: 18px;
+  color: $neon-pink;
+  cursor: pointer;
+  padding: 4px 10px;
+  border-radius: 8px;
+  transition: background 0.2s;
+
+  &:active { background: rgba(255, 143, 163, 0.1); }
+}
+
+.month-label {
+  font-size: 15px;
+  font-weight: 700;
+  color: #f0f0f0;
+}
+
+/* DAN LABELE */
+.day-labels {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 2px;
+}
+
+.day-label {
+  text-align: center;
+  font-size: 10px;
+  font-weight: 700;
+  color: #444;
+  text-transform: uppercase;
+  padding: 6px 0;
+}
+
+/* KALENDAR GRID */
+.cal-grid {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 3px;
+}
+
+.cal-day {
+  aspect-ratio: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  border-radius: 10px;
+  cursor: pointer;
+  position: relative;
+  border: 1px solid transparent;
+  transition: all 0.15s;
+  gap: 2px;
+
+  &.other-month {
+    opacity: 0.2;
+  }
+
+  &.today {
+    border-color: rgba(255, 143, 163, 0.4);
+    background: rgba(255, 143, 163, 0.06);
+
+    .day-num { color: $neon-pink; font-weight: 700; }
+  }
+
+  &.selected {
+    background: rgba(255, 143, 163, 0.15);
+    border-color: $neon-pink;
+    box-shadow: 0 0 10px rgba(255, 143, 163, 0.2);
+  }
+
+  &.has-tasks:not(.selected):not(.today) {
+    background: rgba(255, 255, 255, 0.03);
+  }
+
+  &:active { transform: scale(0.95); }
+}
+
+.day-num {
+  font-size: 13px;
+  color: #ccc;
+  line-height: 1;
+}
+
+.day-dots {
+  display: flex;
+  gap: 2px;
+  align-items: center;
+}
+
+.dot {
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+
+  &.pending { background: $neon-pink; }
+  &.completed { background: #39ff85; }
+}
+
+/* LEGENDA */
+.legend {
+  display: flex;
+  gap: 16px;
+  justify-content: center;
+}
+
+.legend-item {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 11px;
+  color: #555;
+}
+
+/* ODABRANI DAN */
+.selected-day-section {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.selected-day-header {
+  padding: 0 2px;
+}
+
+.selected-day-title {
+  font-size: 13px;
+  font-weight: 700;
+  color: $neon-pink;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+}
+
+.task-list {
+  background: #111;
+  border: 1px solid rgba(255, 143, 163, 0.2);
+  border-radius: 14px;
+  overflow: hidden;
+}
+
+.empty-state {
+  text-align: center;
+  padding: 30px 0;
+  color: #444;
+  font-size: 13px;
+}
+
+.tap-hint {
+  text-align: center;
+  padding: 20px 0;
+  color: #333;
+  font-size: 13px;
+}

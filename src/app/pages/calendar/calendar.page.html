@@ -1,0 +1,94 @@
+<ion-header class="ion-no-border">
+  <ion-toolbar>
+    <div class="header-content">
+      <div class="back-btn" (click)="goBack()">←</div>
+      <h2 class="page-title">Kalendar</h2>
+    </div>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <div class="cal-container">
+
+    <div class="loading-state" *ngIf="isLoading">
+      <ion-spinner name="crescent" style="color: #ff8fa3"></ion-spinner>
+    </div>
+
+    <div *ngIf="!isLoading">
+
+      <!-- NAVIGACIJA MESECA -->
+      <div class="month-nav">
+        <div class="nav-arrow" (click)="prevMonth()">←</div>
+        <div class="month-label">{{ monthLabel }}</div>
+        <div class="nav-arrow" (click)="nextMonth()">→</div>
+      </div>
+
+      <!-- DAN LABELE -->
+      <div class="day-labels">
+        <div class="day-label" *ngFor="let d of dayLabels">{{ d }}</div>
+      </div>
+
+      <!-- GRID KALENDARSKIH DANA -->
+      <div class="cal-grid">
+        <div
+          *ngFor="let day of calendarDays"
+          class="cal-day"
+          [class.other-month]="!day.isCurrentMonth"
+          [class.today]="day.isToday"
+          [class.selected]="selectedDay?.date === day.date"
+          [class.has-tasks]="day.tasks.length > 0"
+          (click)="selectDay(day)"
+        >
+          <span class="day-num">{{ day.dayNum }}</span>
+          <div class="day-dots" *ngIf="day.tasks.length > 0">
+            <div class="dot pending" *ngIf="day.hasPending"></div>
+            <div class="dot completed" *ngIf="day.hasCompleted"></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- LEGENDA -->
+      <div class="legend">
+        <div class="legend-item">
+          <div class="dot pending"></div>
+          <span>Na čekanju</span>
+        </div>
+        <div class="legend-item">
+          <div class="dot completed"></div>
+          <span>Završeno</span>
+        </div>
+      </div>
+
+      <!-- TASKOVI ODABRANOG DANA -->
+      <div class="selected-day-section" *ngIf="selectedDay">
+        <div class="selected-day-header">
+          <span class="selected-day-title">
+            {{ selectedDay.dayNum }}. · {{ selectedDay.tasks.length }}
+            {{ selectedDay.tasks.length === 1 ? 'zadatak' : 'zadataka' }}
+          </span>
+        </div>
+
+        <div class="empty-state" *ngIf="selectedDay.tasks.length === 0">
+          <p>Nema zadataka za ovaj dan</p>
+        </div>
+
+        <div class="task-list" *ngIf="selectedDay.tasks.length > 0">
+          <app-task-card
+            *ngFor="let task of selectedDay.tasks"
+            [task]="task"
+            (onToggle)="toggleTask($event)"
+            (onDelete)="deleteTask($event)"
+            (onEdit)="editTask($event)"
+             (onView)="viewTask($event)">
+          </app-task-card>
+        </div>
+      </div>
+
+      <!-- PLACEHOLDER kad nije izabran dan -->
+      <div class="tap-hint" *ngIf="!selectedDay">
+        <p>Klikni na dan da vidiš zadatke</p>
+      </div>
+
+    </div>
+  </div>
+</ion-content>
