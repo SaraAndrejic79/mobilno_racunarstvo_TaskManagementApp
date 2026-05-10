@@ -60,7 +60,7 @@
             placeholder="••••••••"
             class="custom-input"
           ></ion-input>
-         <!-- prazno -->
+         
 <div class="error-msg" *ngIf="registerForm.get('confirmPassword')?.touched && !registerForm.get('confirmPassword')?.value">
   Unesi potvrdu lozinke
 </div>
@@ -69,23 +69,19 @@
   Lozinke se ne poklapaju
 </div> </div>
 
-        <div class="error-banner" *ngIf="errorMsg">{{ errorMsg }}</div>
+<div class="error-banner" *ngIf="errorMsg">{{ errorMsg }}</div>
+                                                        <!-- //Sprečava duple zahteve: Zahvaljujući || isLoading -->
+ <ion-button class="btn-primary" type="submit"   [disabled]="registerForm.invalid || isLoading">
+   <ion-spinner *ngIf="isLoading" name="crescent"></ion-spinner>
+   <span *ngIf="!isLoading">Registruj se</span>
+</ion-button>
 
-        <ion-button
-          class="btn-primary"
-          type="submit"
-          [disabled]="registerForm.invalid || isLoading"
-        >
-          <ion-spinner *ngIf="isLoading" name="crescent"></ion-spinner>
-          <span *ngIf="!isLoading">Registruj se</span>
-        </ion-button>
+</form>
 
-      </form>
-
-      <p class="switch-auth" style="margin-top: 24px;">
-        Već imaš nalog?
-        <span class="link" (click)="goToLogin()">Prijavi se →</span>
-      </p>
-
-    </div> </div>
+<p class="switch-auth" style="margin-top: 24px;">
+   Već imaš nalog?
+    <span class="link" (click)="goToLogin()">Prijavi se →</span>
+ </p>
+ </div>
+ </div>
 </ion-content>

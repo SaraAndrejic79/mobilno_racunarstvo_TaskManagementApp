@@ -3,7 +3,8 @@ import { Router, ActivatedRoute } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import {
   IonContent, IonHeader, IonToolbar,
-  IonFab, IonFabButton, IonIcon, IonSpinner
+  IonFab, IonFabButton, IonIcon, IonSpinner,
+  AlertController
 } from '@ionic/angular/standalone';
 import { addIcons } from 'ionicons';
 import { add } from 'ionicons/icons';
@@ -31,6 +32,7 @@ export class TasksPage implements OnInit {
   filteredTasks: Task[] = [];
   categories: Category[] = [];
   isLoading = false;
+  errorMsg = '';
 
   selectedFilter: string = 'Sve';
   selectedCategory: string = 'Sve';
@@ -42,7 +44,8 @@ export class TasksPage implements OnInit {
     private router: Router,
     private route: ActivatedRoute,
     private taskService: TaskService,
-    private categoryService: CategoryService
+    private categoryService: CategoryService,
+    private alertCtrl: AlertController
   ) {
     addIcons({ add });
     this.calcWeekRange();
@@ -77,17 +80,26 @@ export class TasksPage implements OnInit {
 
   loadData() {
     this.isLoading = true;
+    this.errorMsg = '';
+
     this.taskService.getTasks().subscribe({
       next: (tasks) => {
         this.allTasks = tasks.sort((a, b) => a.dueDate.localeCompare(b.dueDate));
         this.applyFilter();
         this.isLoading = false;
       },
-      error: () => { this.isLoading = false; }
+      error: () => {
+        this.isLoading = false;
+        this.errorMsg = 'Greška pri učitavanju zadataka. Proveri internet konekciju.';
+      }
     });
 
     this.categoryService.getCategories().subscribe({
-      next: (cats) => { this.categories = cats; }
+      next: (cats) => { this.categories = cats; },
+      error: () => {
+        // Kategorije nisu kritične za prikaz — tiho ignorišemo
+        this.categories = [];
+      }
     });
   }
 
@@ -123,7 +135,7 @@ export class TasksPage implements OnInit {
         tasks = tasks.filter(t => t.dueDate >= this.weekStart && t.dueDate <= this.weekEnd);
         break;
       case 'Sve':
-      break;
+        break;
     }
 
     if (this.selectedCategory !== 'Sve') {
@@ -138,26 +150,54 @@ export class TasksPage implements OnInit {
       next: () => {
         task.completed = !task.completed;
         this.applyFilter();
+      },
+      error: () => {
+        this.errorMsg = 'Greška pri ažuriranju zadatka. Proveri internet konekciju.';
+        setTimeout(() => this.errorMsg = '', 3000);
       }
     });
   }
 
-  deleteTask(task: Task) {
-    this.taskService.deleteTask(task.id).subscribe({
-      next: () => {
-        this.allTasks = this.allTasks.filter(t => t.id !== task.id);
-        this.applyFilter();
-      }
+  async deleteTask(task: Task) {
+    const alert = await this.alertCtrl.create({
+      header: 'Obriši zadatak',
+      message: `Jesi li siguran/na da želiš da obrišeš "${task.name}"?`,
+      buttons: [
+        { text: 'Otkaži', role: 'cancel' },
+        {
+          text: 'Obriši',
+          role: 'destructive',
+          handler: () => {
+            this.taskService.deleteTask(task.id).subscribe({
+              next: () => {
+                this.allTasks = this.allTasks.filter(t => t.id !== task.id);
+                this.applyFilter();
+              },
+              error: () => {
+                this.errorMsg = 'Greška pri brisanju. Proveri internet konekciju.';
+                setTimeout(() => this.errorMsg = '', 3000);
+              }
+            });
+          }
+        }
+      ],
+      cssClass: 'custom-alert'
     });
+    await alert.present();
   }
 
   editTask(task: Task) {
-  this.router.navigate(['/add-task', task.id]);
-}
-viewTask(task: Task) {
-  this.router.navigate(['/add-task', task.id], { queryParams: { mode: 'view' } });
-}
+    // Prosleđujemo 'from' da se zna gde da se vrati
+    this.router.navigate(['/add-task', task.id], { queryParams: { from: '/tasks' } });
+  }
 
-  goToAddTask() { this.router.navigate(['/add-task']); }
+  viewTask(task: Task) {
+    this.router.navigate(['/add-task', task.id], { queryParams: { mode: 'view', from: '/tasks' } });
+  }
+
+  goToAddTask() {
+    this.router.navigate(['/add-task'], { queryParams: { from: '/tasks' } });
+  }
+
   goBack() { this.router.navigate(['/dashboard']); }
 }

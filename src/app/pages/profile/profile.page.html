@@ -10,22 +10,21 @@
 <ion-content>
   <div class="profile-container">
 
-    <!-- AVATAR -->
     <div class="avatar-section">
       <div class="avatar-big">{{ userInitial }}</div>
       <h2 class="profile-name">{{ userName }}</h2>
       <p class="profile-email">{{ userEmail }}</p>
     </div>
 
-   <div class="info-card">
+<div class="info-card">
   <div class="card-title">Informacije o nalogu</div>
- <div class="info-row">
-  <span class="info-label">Ime</span>
-  <div style="display:flex; align-items:center; gap:8px;">
+   <div class="info-row">
+    <span class="info-label">Ime</span>
+    <div style="display:flex; align-items:center; gap:8px;">
     <span class="info-value">{{ userName }}</span>
     <span class="edit-email-btn" (click)="toggleEditName()">✎</span>
   </div>
-</div>
+  </div>
 
 <div class="edit-email-form" *ngIf="showEditName">
   <ion-input
@@ -52,7 +51,6 @@
     </div>
   </div>
 
-  <!-- FORMA ZA IZMENU EMAILA -->
   <div class="edit-email-form" *ngIf="showEditEmail">
     <ion-input
       [(ngModel)]="newEmail"
@@ -93,7 +91,6 @@
   <div class="email-error" *ngIf="reauthError" style="margin-top: 5px;">{{ reauthError }}</div>
 </div>
 
-    <!-- RESET LOZINKE -->
     <div class="card">
       <div class="card-title">Bezbednost</div>
       <p class="reset-desc">
@@ -120,8 +117,6 @@
         </span>
       </ion-button>
     </div>
-
-    <!-- LOGOUT -->
     <div class="logout-btn" (click)="logout()">
       Odjavi se
     </div>
@@ -129,6 +124,7 @@
   </div>
 </ion-content>
 
+ <!-- Ova zagrada (didDismiss) je senzor koji prati kada prozor nestane sa ekrana, bez obzira na to KAKO je nestao. -->
 <ion-alert
   [isOpen]="showLogoutAlert"
   header="Odjava"

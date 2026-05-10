@@ -2,7 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import {
-  IonContent, IonHeader, IonToolbar, IonSpinner
+  IonContent, IonHeader, IonToolbar, IonSpinner,
+  AlertController
 } from '@ionic/angular/standalone';
 import { Task } from '../../models/task.model';
 import { TaskService } from '../../services/task/task';
@@ -32,6 +33,7 @@ interface CalendarDay {
 export class CalendarPage implements OnInit {
 
   isLoading = false;
+  errorMsg = '';
   allTasks: Task[] = [];
   calendarDays: CalendarDay[] = [];
   selectedDay: CalendarDay | null = null;
@@ -54,20 +56,28 @@ export class CalendarPage implements OnInit {
     return this.selectedDay?.tasks || [];
   }
 
-  constructor(private router: Router, private taskService: TaskService) {}
+  constructor(
+    private router: Router,
+    private taskService: TaskService,
+    private alertCtrl: AlertController
+  ) {}
 
   ngOnInit() { this.loadTasks(); }
   ionViewWillEnter() { this.loadTasks(); }
 
   loadTasks() {
     this.isLoading = true;
+    this.errorMsg = '';
     this.taskService.getTasks().subscribe({
       next: (tasks) => {
         this.allTasks = tasks;
         this.buildCalendar();
         this.isLoading = false;
       },
-      error: () => { this.isLoading = false; }
+      error: () => {
+        this.isLoading = false;
+        this.errorMsg = 'Greška pri učitavanju. Proveri internet konekciju.';
+      }
     });
   }
 
@@ -78,11 +88,9 @@ export class CalendarPage implements OnInit {
     const firstDay = new Date(this.currentYear, this.currentMonth, 1);
     const lastDay = new Date(this.currentYear, this.currentMonth + 1, 0);
 
-    // koji dan u nedelji je prvi - 0=ned, pretvoriti u pon=0
     let startDow = firstDay.getDay();
     startDow = startDow === 0 ? 6 : startDow - 1;
 
-    // prethodni mesec - prazni dani
     for (let i = 0; i < startDow; i++) {
       const d = new Date(firstDay);
       d.setDate(d.getDate() - (startDow - i));
@@ -90,14 +98,12 @@ export class CalendarPage implements OnInit {
       this.calendarDays.push(this.makeDay(d.getDate(), dateStr, false, today));
     }
 
-    // trenutni mesec
     for (let i = 1; i <= lastDay.getDate(); i++) {
       const d = new Date(this.currentYear, this.currentMonth, i);
       const dateStr = d.toISOString().split('T')[0];
       this.calendarDays.push(this.makeDay(i, dateStr, true, today));
     }
 
-    // dopuni do 42 polja (6 redova)
     while (this.calendarDays.length < 42) {
       const last = this.calendarDays[this.calendarDays.length - 1];
       const d = new Date(last.date);
@@ -106,7 +112,6 @@ export class CalendarPage implements OnInit {
       this.calendarDays.push(this.makeDay(d.getDate(), dateStr, false, today));
     }
 
-    // ako je selectedDay postoji, osvezi ga
     if (this.selectedDay) {
       const refreshed = this.calendarDays.find(d => d.date === this.selectedDay!.date);
       this.selectedDay = refreshed || null;
@@ -127,11 +132,7 @@ export class CalendarPage implements OnInit {
   }
 
   selectDay(day: CalendarDay) {
-    if (this.selectedDay?.date === day.date) {
-      this.selectedDay = null;
-    } else {
-      this.selectedDay = day;
-    }
+    this.selectedDay = this.selectedDay?.date === day.date ? null : day;
   }
 
   prevMonth() {
@@ -156,28 +157,54 @@ export class CalendarPage implements OnInit {
     this.buildCalendar();
   }
 
-editTask(task: Task) {
-  this.router.navigate(['/add-task', task.id]);
-}
+  editTask(task: Task) {
+    // from='/calendar' da se zna kuda da se vrati
+    this.router.navigate(['/add-task', task.id], { queryParams: { from: '/calendar' } });
+  }
 
-viewTask(task: Task) {
-  this.router.navigate(['/add-task', task.id], { queryParams: { mode: 'view' } });
-}
+  viewTask(task: Task) {
+    this.router.navigate(['/add-task', task.id], { queryParams: { mode: 'view', from: '/calendar' } });
+  }
 
-toggleTask(task: Task) {
-  this.taskService.toggleTask(task.id, !task.completed).subscribe({
-    next: () => {
-      task.completed = !task.completed;
-    }
-  });
-}
-
-  deleteTask(task: Task) {
-    this.taskService.deleteTask(task.id).subscribe({
+  toggleTask(task: Task) {
+    this.taskService.toggleTask(task.id, !task.completed).subscribe({
       next: () => {
-        this.allTasks = this.allTasks.filter(t => t.id !== task.id);
+        task.completed = !task.completed;
+        this.buildCalendar();
+      },
+      error: () => {
+        this.errorMsg = 'Greška pri ažuriranju. Proveri internet konekciju.';
+        setTimeout(() => this.errorMsg = '', 3000);
       }
     });
+  }
+
+  async deleteTask(task: Task) {
+    const alert = await this.alertCtrl.create({
+      header: 'Obriši zadatak',
+      message: `Jesi li siguran/na da želiš da obrišeš "${task.name}"?`,
+      buttons: [
+        { text: 'Otkaži', role: 'cancel' },
+        {
+          text: 'Obriši',
+          role: 'destructive',
+          handler: () => {
+            this.taskService.deleteTask(task.id).subscribe({
+              next: () => {
+                this.allTasks = this.allTasks.filter(t => t.id !== task.id);
+                this.buildCalendar();
+              },
+              error: () => {
+                this.errorMsg = 'Greška pri brisanju. Proveri internet konekciju.';
+                setTimeout(() => this.errorMsg = '', 3000);
+              }
+            });
+          }
+        }
+      ],
+      cssClass: 'custom-alert'
+    });
+    await alert.present();
   }
 
   goBack() { this.router.navigate(['/dashboard']); }

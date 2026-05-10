@@ -9,6 +9,7 @@ import {
 } from '@ionic/angular/standalone';
 import { HttpClient } from '@angular/common/http';
 import { AuthService } from '../../services/auth/auth';
+import { environment } from 'src/environments/environment';
 
 @Component({
   selector: 'app-profile',
@@ -22,34 +23,34 @@ import { AuthService } from '../../services/auth/auth';
   ]
 })
 export class ProfilePage implements OnInit {
-
+//ovaj deo je stanje komponente
+ //podaci korisnika
   userName = '';
   userEmail = '';
   userInitial = '';
-
+ //flegovi + stejtovi za greske ucitavanje
   showLogoutAlert = false;
   resetSent = false;
   resetLoading = false;
   resetError = '';
 
   showEditEmail = false;
-newEmail = '';
-emailLoading = false;
-emailSuccess = false;
-emailError = '';
+  newEmail = '';
+  emailLoading = false;
+  emailSuccess = false;
+  emailError = '';
 
-showEditName = false;
-newName = '';
-nameLoading = false;
-nameError = '';
+  showEditName = false;
+  newName = '';
+  nameLoading = false;
+  nameError = '';
 
-needsReauth = false;
-currentPassword = '';
-reauthLoading = false;
-reauthError = '';
+  needsReauth = false;
+  currentPassword = '';
+  reauthLoading = false;
+  reauthError = '';
 
-  private apiKey = 'AIzaSyDOlSOZHke07_qfc2Dytrc_BeuoLk7lC5c';
-
+  private apiKey = environment.firebaseConfig.apiKey;
   alertButtons = [
     { text: 'Otkaži', role: 'cancel' },
     { text: 'Odjavi se', role: 'confirm', handler: () => this.confirmLogout() }
@@ -76,9 +77,6 @@ toggleEditEmail() {
 }
 
 async updateEmail() {
-  console.log('--- Funkcija updateEmail je pozvana ---');
-  console.log('Novi email:', this.newEmail);
-  
   if (!this.newEmail || this.newEmail === this.userEmail) {
     console.log('Email je isti kao trenutni ili prazan.');
     return;
@@ -86,8 +84,8 @@ async updateEmail() {
   
   this.emailError = '';
   this.needsReauth = true; 
-  console.log('needsReauth postavljen na true');
 }
+
 async reauthenticateAndSave() {
   if (!this.currentPassword) {
     this.reauthError = 'Lozinka je obavezna.';
@@ -97,7 +95,6 @@ async reauthenticateAndSave() {
   this.reauthLoading = true;
   this.reauthError = '';
 
-  // KORAK 1: Ponovna prijava (Login) da dobijemo svež token
   this.http.post(`https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key=${this.apiKey}`, {
     email: this.userEmail,
     password: this.currentPassword,
@@ -105,9 +102,7 @@ async reauthenticateAndSave() {
   }).subscribe({
     next: (res: any) => {
       const freshToken = res.idToken;
-      localStorage.setItem('token', freshToken); // Čuvamo svež token
-
-      // KORAK 2: Sad kad imamo "vruć" token, šaljemo zahtev za promenu emaila
+      localStorage.setItem('token', freshToken); 
       this.finishEmailUpdate(freshToken);
     },
     error: (err) => {
@@ -117,9 +112,7 @@ async reauthenticateAndSave() {
   });
 }
 
-// 3. Pomoćna funkcija koja konačno šalje zahtev Google-u
 finishEmailUpdate(token: string) {
-  // Koristimo 'accounts:update' umesto 'sendOobCode'
   this.http.post(
     `https://identitytoolkit.googleapis.com/v1/accounts:update?key=${this.apiKey}`,
     { 
@@ -134,7 +127,6 @@ finishEmailUpdate(token: string) {
       this.showEditEmail = false;
       this.currentPassword = '';
 
-      // Odmah ažuriramo podatke u aplikaciji
       this.userEmail = res.email;
       localStorage.setItem('userEmail', res.email);
       if (res.idToken) localStorage.setItem('token', res.idToken);
@@ -153,20 +145,20 @@ finishEmailUpdate(token: string) {
     }
   });
 }
+
 toggleEditName() {
   this.showEditName = !this.showEditName;
   this.newName = this.userName;
   this.nameError = '';
 }
 
-async updateName() { // Dodaj 'async' ovde
+async updateName() { 
   if (!this.newName || this.newName.trim() === this.userName) return;
   
   this.nameLoading = true;
   this.nameError = '';
 
   try {
-    // Čekamo da se Promise razreši i dobijemo pravi string tokena
     const token = await this.authService.getToken(); 
 
     const body = {
@@ -196,6 +188,7 @@ async updateName() { // Dodaj 'async' ovde
     this.nameError = 'Neuspešno dobavljanje tokena.';
   }
 }
+
   sendPasswordReset() {
     this.resetLoading = true;
     this.resetError = '';
@@ -203,7 +196,8 @@ async updateName() { // Dodaj 'async' ovde
 
     this.http.post(
       `https://identitytoolkit.googleapis.com/v1/accounts:sendOobCode?key=${this.apiKey}`,
-      { requestType: 'PASSWORD_RESET', email: this.userEmail }
+      { requestType: 'PASSWORD_RESET', 
+        email: this.userEmail }
     ).subscribe({
       next: () => {
         this.resetLoading = false;

@@ -41,3 +41,45 @@ ion-app {
 
   margin: 0 auto;
 }
+.custom-alert {
+  --background: #1a1a1a;
+  --color: #fff;
+  --border-radius: 30px;
+
+  .alert-title {
+    color: #fff;
+    font-size: 18px !important;
+    font-weight: 600 !important;
+  }
+
+  .alert-message {
+    color: rgba(255, 255, 255, 0.6) !important;
+    font-size: 15px !important; // Bilo je 14px-15px
+    line-height: 1.4 !important;
+  }
+
+  button.alert-button {
+    font-size: 15px !important; // Smanjena slova na dugmetu
+    font-weight: 700 !important;
+    color: #ff8fa3 !important; // Tvoja roze/accent boja
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    padding-right: 20px !important; // Malo razmaka od ivice
+  }
+
+  .alert-wrapper {
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    max-width: 380px !important; 
+  }
+}
+.page-error-banner {
+  background: rgba(255, 80, 80, 0.1);
+  border: 1px solid rgba(255, 80, 80, 0.3);
+  border-radius: 10px;
+  padding: 10px 14px;
+  font-size: 13px;
+  color: #ff6060;
+  margin: 12px 16px;
+  text-align: center;
+}
+ 

@@ -3,21 +3,19 @@ import { HttpClient } from '@angular/common/http';
 import { Observable, map } from 'rxjs';
 import { AuthService } from '../auth/auth';
 import { Category } from '../../models/category.model';
-
+import { environment } from 'src/environments/environment';
 
 @Injectable({ providedIn: 'root' })
 export class CategoryService {
 
-  private dbUrl = 'https://taskly-app-61296-default-rtdb.firebaseio.com';
+  private dbUrl = environment.firebaseConfig.databaseURL;
 
   constructor(private http: HttpClient, private auth: AuthService) {}
-//Funkcija getUserUrl() u tvom kodu je pomoćna funkcija (tzv. helper). Njen jedini posao je da "izgradi" tačnu adresu (putanju) do mesta u bazi gde se nalaze podaci trenutno ulogovanog korisnika.
+  
   private getUserUrl(): string {
-    //Ti "dolari" (${...}) su deo nečega što se u JavaScriptu/TypeScriptu zove Template Literals (ili Template Strings).
-    //To način da spojiš običan tekst sa podacima iz tvojih promenljivih.
     return `${this.dbUrl}/users/${this.auth.getUserId()}`;
   }
-  //any znači da Observable može da emituje bilo koji tip podatka.
+              
   addCategory(category: Omit<Category, 'id'>): Observable<any> {
     return this.http.post(`${this.getUserUrl()}/categories.json`, category);
   }
@@ -29,8 +27,8 @@ export class CategoryService {
       map(data => {
         if (!data) return [];
         return Object.keys(data).map(key => ({
-          ...data[key],//: Ovo se zove Spread operator. On uzima sve iz originalnog objekta (ime i boju).
-          id: key
+          ...data[key],
+           id: key
         }));
       })
     );

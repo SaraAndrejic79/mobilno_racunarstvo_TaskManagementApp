@@ -22,7 +22,6 @@ import { Category } from '../../models/category.model';
     CommonModule, ReactiveFormsModule, FormsModule,
     IonContent, IonHeader, IonToolbar, IonButton,
     IonInput, IonTextarea, IonSpinner, IonIcon,
-    AlertController
   ]
 })
 export class AddTaskPage implements OnInit {
@@ -32,6 +31,7 @@ export class AddTaskPage implements OnInit {
   errorMsg = '';
   isEditMode = false;
   taskId = '';
+  originalCompleted = false;
 
   categories: Category[] = [];
   selectedCategory: Category | null = null;
@@ -49,7 +49,6 @@ export class AddTaskPage implements OnInit {
   priorities = ['Visok', 'Srednji', 'Nizak'];
   isViewMode = false;
 
-  // Čuvamo odakle je korisnik došao da bi se vratio na pravo mesto
   private returnUrl = '/tasks';
 
   constructor(
@@ -72,13 +71,11 @@ export class AddTaskPage implements OnInit {
   ngOnInit() {
     this.taskId = this.route.snapshot.params['id'];
     const mode = this.route.snapshot.queryParams['mode'];
-    // Čitamo odakle je korisnik stigao (dashboard, calendar, tasks...)
     this.returnUrl = this.route.snapshot.queryParams['from'] || '/tasks';
 
     this.isViewMode = mode === 'view';
     this.isEditMode = !!this.taskId && !this.isViewMode;
 
-    // 1. Prvo učitaj kategorije
     this.categoryService.getCategories().subscribe({
       next: (cats) => {
         this.categories = cats;
@@ -89,7 +86,7 @@ export class AddTaskPage implements OnInit {
         }
       },
       error: () => {
-        this.errorMsg = 'Greška pri učitavanju kategorija. Proveri internet konekciju.';
+        this.errorMsg = 'Greška pri učitavanju kategorija.';
       }
     });
   }
@@ -105,6 +102,7 @@ export class AddTaskPage implements OnInit {
           dueTime: task.dueTime
         });
         this.selectedPriority = task.priority;
+        this.originalCompleted = task.completed;
         if (this.categories && this.categories.length > 0) {
           const foundCategory = this.categories.find(c => c.name === task.category);
           if (foundCategory) {
@@ -115,7 +113,7 @@ export class AddTaskPage implements OnInit {
         }
       },
       error: () => {
-        this.errorMsg = 'Greška pri učitavanju zadatka. Proveri internet konekciju.';
+        this.errorMsg = 'Greška pri učitavanju zadatka.';
       }
     });
   }
@@ -149,7 +147,7 @@ export class AddTaskPage implements OnInit {
         this.newCategoryName = '';
       },
       error: () => {
-        this.errorMsg = 'Greška pri čuvanju kategorije. Proveri internet konekciju.';
+        this.errorMsg = 'Greška pri čuvanju kategorije.';
       }
     });
   }
@@ -169,8 +167,7 @@ export class AddTaskPage implements OnInit {
       return;
     }
 
-    // Potvrda pre brisanja
-    const alert = await this.alertCtrl.create({
+  const alert = await this.alertCtrl.create({
       header: 'Obriši kategoriju',
       message: `Jesi li siguran/na da želiš da obrišeš kategoriju "${cat.name}"?`,
       buttons: [
@@ -187,7 +184,7 @@ export class AddTaskPage implements OnInit {
                 }
               },
               error: () => {
-                this.errorMsg = 'Greška pri brisanju kategorije. Proveri internet konekciju.';
+                this.errorMsg = 'Greška pri brisanju kategorije.';
               }
             });
           }
@@ -201,7 +198,6 @@ export class AddTaskPage implements OnInit {
   onSave() {
     if (this.taskForm.invalid) return;
 
-    // Mora biti selektovana kategorija
     if (!this.selectedCategory) {
       this.errorMsg = 'Molimo izaberite kategoriju.';
       return;
@@ -219,7 +215,7 @@ export class AddTaskPage implements OnInit {
       priority: this.selectedPriority,
       category: this.selectedCategory.name,
       categoryColor: this.selectedCategory.color,
-      completed: false
+      completed: this.isEditMode ? this.originalCompleted : false
     };
 
     if (this.isEditMode) {
@@ -250,7 +246,6 @@ export class AddTaskPage implements OnInit {
   goBack() {
     this.isEditMode = false;
     this.isViewMode = false;
-    // Vraćamo se tamo odakle smo došli, ne uvek na /tasks
     this.router.navigate([this.returnUrl]);
   }
 }

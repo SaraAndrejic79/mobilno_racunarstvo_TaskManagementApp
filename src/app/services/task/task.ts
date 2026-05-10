@@ -3,11 +3,12 @@ import { HttpClient } from '@angular/common/http';
 import { Observable, map } from 'rxjs';
 import { Task } from '../../models/task.model';
 import { AuthService } from '../auth/auth';
+import { environment } from 'src/environments/environment';
 
 @Injectable({ providedIn: 'root' })
 export class TaskService {
 
-  private dbUrl = 'https://taskly-app-61296-default-rtdb.firebaseio.com';
+  private dbUrl = environment.firebaseConfig.databaseURL;
 
   constructor(private http: HttpClient, private auth: AuthService) {}
 

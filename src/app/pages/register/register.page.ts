@@ -10,7 +10,6 @@ import { AuthService } from '../../services/auth/auth';
 import { ChangeDetectorRef } from '@angular/core';
 
 function passwordMatch(control: AbstractControl): ValidationErrors | null {
-  //uzimaš dva inputa iz forme:
   const passwordControl = control.get('password');
   const confirmPasswordControl = control.get('confirmPassword');
 
@@ -23,8 +22,10 @@ function passwordMatch(control: AbstractControl): ValidationErrors | null {
 
   if (pw !== cpw) {
     confirmPasswordControl.setErrors({ mismatch: true });
+    //Istovremeno označavaš i celu formu kao nevalidnu
     return { mismatch: true };
   } else {
+    //Ako je korisnik ispravio lozinku i sada su iste, ti moraš ručno da obrišeš prethodno postavljenu mismatch grešku
     if (confirmPasswordControl.hasError('mismatch')) {
       confirmPasswordControl.setErrors(null);
     }
@@ -36,7 +37,6 @@ function passwordMatch(control: AbstractControl): ValidationErrors | null {
   selector: 'app-register',
   templateUrl: './register.page.html',
   styleUrls: ['./register.page.scss'],
-  //znači da je komponenta (ili direktiva/pipe) samostalna i NE mora da bude deklarisana u NgModule-u.
   standalone: true,
   imports: [
     CommonModule, ReactiveFormsModule,
@@ -54,14 +54,13 @@ export class RegisterPage {
       email: ['', [Validators.required, Validators.email]],
       password: ['', [Validators.required, Validators.minLength(6)]],
       confirmPassword: ['', Validators.required]
-    }, { validators: passwordMatch }); //jedno pravilo koje važi za celu grupu.
+    }, { validators: passwordMatch });
   }
 
  onRegister() {
   if (this.registerForm.invalid) return;
   this.isLoading = true;
   this.errorMsg = '';
-  //forsira Angular da odmah osveži UI
   this.cdr.detectChanges();
 
   const { name, email, password } = this.registerForm.value;
