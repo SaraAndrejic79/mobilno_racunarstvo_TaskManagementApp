@@ -21,8 +21,6 @@ export class CategoryService {
   }
 
   getCategories(): Observable<Category[]> {
-    //očekujem da Firebase vrati objekat gde su:ključevi = string (id-evi) vrednosti = Task objekti”
-                  //znaci kod autocomplete
     return this.http.get<{[key: string]: Category}>(`${this.getUserUrl()}/categories.json`).pipe(
       map(data => {
         if (!data) return [];

@@ -30,7 +30,7 @@ interface CalendarDay {
     TaskCardComponent
   ]
 })
-export class CalendarPage implements OnInit {
+export class CalendarPage  {
 
   isLoading = false;
   errorMsg = '';
@@ -62,7 +62,6 @@ export class CalendarPage implements OnInit {
     private alertCtrl: AlertController
   ) {}
 
-  ngOnInit() { this.loadTasks(); }
   ionViewWillEnter() { this.loadTasks(); }
 
   loadTasks() {
@@ -76,7 +75,7 @@ export class CalendarPage implements OnInit {
       },
       error: () => {
         this.isLoading = false;
-        this.errorMsg = 'Greška pri učitavanju. Proveri internet konekciju.';
+        this.errorMsg = 'Greška pri učitavanju.';
       }
     });
   }
@@ -86,6 +85,7 @@ export class CalendarPage implements OnInit {
     const today = new Date().toISOString().split('T')[0];
 
     const firstDay = new Date(this.currentYear, this.currentMonth, 1);
+    //Ako staviš 0 kao dan, JavaScript će te vratiti jedan dan unazad od prvog dana sledećeg meseca.
     const lastDay = new Date(this.currentYear, this.currentMonth + 1, 0);
 
     let startDow = firstDay.getDay();
@@ -158,7 +158,6 @@ export class CalendarPage implements OnInit {
   }
 
   editTask(task: Task) {
-    // from='/calendar' da se zna kuda da se vrati
     this.router.navigate(['/add-task', task.id], { queryParams: { from: '/calendar' } });
   }
 

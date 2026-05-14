@@ -8,15 +8,13 @@
 </ion-header>
 
 <ion-content>
-  <div class="stats-container">
+<div class="stats-container">
 
     <div class="loading-state" *ngIf="isLoading">
       <ion-spinner name="crescent" style="color: #ff8fa3"></ion-spinner>
     </div>
-
-<div *ngIf="!isLoading" style="display: flex; flex-direction: column; gap: 16px;">
-
-      <div class="week-nav">
+  <div *ngIf="!isLoading" style="display: flex; flex-direction: column; gap: 16px;">
+  <div class="week-nav">
         <div class="nav-arrow" (click)="prevWeek()">←</div>
         <div class="week-label">{{ weekLabel }}</div>
         <div class="nav-arrow" [class.disabled]="isCurrentWeek()" (click)="nextWeek()">→</div>
@@ -31,7 +29,7 @@
   <div class="divider-v"></div>
   <div class="big-stat">
     <span class="big-num amber">{{ skippedPercent }}%</span>
-    <span class="big-lbl">Preskočeno</span>
+    <span class="big-lbl">Preostalo</span>
   </div>
   <div class="divider-v"></div>
   <div class="big-stat">
@@ -41,7 +39,7 @@
 </div>
 
 <div class="no-data-card" *ngIf="totalCount === 0">
-  <p>Nema podataka za ovu nedelju 📭</p>
+  <p>Nema podataka za ovu nedelju </p>
 </div>
 
  <div class="card">
@@ -80,14 +78,6 @@
             </div>
             <div class="cat-sub">{{ cat.completed }} od {{ cat.total }} završeno</div>
           </div>
-        </div>
-      </div>
-
-      <div class="card streak-card">
-        <div class="streak-icon">🔥</div>
-        <div>
-          <div class="streak-num">{{ streak }} {{ streak === 1 ? 'dan' : 'dana' }}</div>
-          <div class="streak-lbl">uzastopnih dana sa završenim taskovima</div>
         </div>
       </div>
 

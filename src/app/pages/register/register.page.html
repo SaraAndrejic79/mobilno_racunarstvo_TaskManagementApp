@@ -70,8 +70,8 @@
 </div> </div>
 
 <div class="error-banner" *ngIf="errorMsg">{{ errorMsg }}</div>
-                                                        <!-- //Sprečava duple zahteve: Zahvaljujući || isLoading -->
- <ion-button class="btn-primary" type="submit"   [disabled]="registerForm.invalid || isLoading">
+
+<ion-button class="btn-primary" type="submit"   [disabled]="registerForm.invalid || isLoading">
    <ion-spinner *ngIf="isLoading" name="crescent"></ion-spinner>
    <span *ngIf="!isLoading">Registruj se</span>
 </ion-button>

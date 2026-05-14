@@ -50,15 +50,19 @@ export class DashboardPage implements OnInit {
     return this.allTasks.filter(t => t.dueDate < today && !t.completed).length;
   }
   get weekCount() {
-    const today = new Date();
-    const startOfWeek = new Date(today);
-    startOfWeek.setDate(today.getDate() - today.getDay() + 1);
-    const endOfWeek = new Date(startOfWeek);
-    endOfWeek.setDate(startOfWeek.getDate() + 6);
-    const start = startOfWeek.toISOString().split('T')[0];
-    const end = endOfWeek.toISOString().split('T')[0];
-    return this.allTasks.filter(t => t.dueDate >= start && t.dueDate <= end).length;
-  }
+  const today = new Date();
+  const dayOfWeek = today.getDay();
+  const mondayOffset = dayOfWeek === 0 ? 6 : dayOfWeek - 1; 
+
+  const startOfWeek = new Date(today);
+  startOfWeek.setDate(today.getDate() - mondayOffset);
+  const endOfWeek = new Date(startOfWeek);
+  endOfWeek.setDate(startOfWeek.getDate() + 6);
+
+  const start = startOfWeek.toISOString().split('T')[0];
+  const end = endOfWeek.toISOString().split('T')[0];
+  return this.allTasks.filter(t => t.dueDate >= start && t.dueDate <= end).length;
+}
 
   constructor(
     private router: Router,
@@ -191,19 +195,22 @@ export class DashboardPage implements OnInit {
   goToStats() { this.router.navigate(['/stats']); }
   goToCalendar() { this.router.navigate(['/calendar']); }
 
-  goToWeekTasks() {
-    const today = new Date();
-    const startOfWeek = new Date(today);
-    startOfWeek.setDate(today.getDate() - today.getDay() + 1);
-    const endOfWeek = new Date(startOfWeek);
-    endOfWeek.setDate(startOfWeek.getDate() + 6);
+ goToWeekTasks() {
+  const today = new Date();
+  const dayOfWeek = today.getDay();
+  const mondayOffset = dayOfWeek === 0 ? 6 : dayOfWeek - 1;
 
-    this.router.navigate(['/tasks'], {
-      queryParams: {
-        filter: 'Nedelja',
-        start: startOfWeek.toISOString().split('T')[0],
-        end: endOfWeek.toISOString().split('T')[0]
-      }
-    });
-  }
+  const startOfWeek = new Date(today);
+  startOfWeek.setDate(today.getDate() - mondayOffset);
+  const endOfWeek = new Date(startOfWeek);
+  endOfWeek.setDate(startOfWeek.getDate() + 6);
+
+  this.router.navigate(['/tasks'], {
+    queryParams: {
+      filter: 'Nedelja',
+      start: startOfWeek.toISOString().split('T')[0],
+      end: endOfWeek.toISOString().split('T')[0]
+    }
+  });
+}
 }

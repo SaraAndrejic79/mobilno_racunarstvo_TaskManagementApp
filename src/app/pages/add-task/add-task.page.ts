@@ -30,6 +30,8 @@ export class AddTaskPage implements OnInit {
   isLoading = false;
   errorMsg = '';
   isEditMode = false;
+  priorities = ['Visok', 'Srednji', 'Nizak'];
+  isViewMode = false;
   taskId = '';
   originalCompleted = false;
 
@@ -46,8 +48,7 @@ export class AddTaskPage implements OnInit {
     '#ffb830', '#b06fff', '#ff6060'
   ];
 
-  priorities = ['Visok', 'Srednji', 'Nizak'];
-  isViewMode = false;
+
 
   private returnUrl = '/tasks';
 
@@ -155,7 +156,6 @@ export class AddTaskPage implements OnInit {
   async deleteCategory(cat: Category, event: Event) {
     event.stopPropagation();
 
-    // U edit modu, ne smeš obrisati kategoriju kojoj task trenutno pripada
     if (this.isEditMode && this.selectedCategory?.id === cat.id) {
       const alert = await this.alertCtrl.create({
         header: 'Nije moguće',

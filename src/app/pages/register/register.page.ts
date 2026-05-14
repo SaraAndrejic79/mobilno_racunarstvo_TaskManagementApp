@@ -22,10 +22,8 @@ function passwordMatch(control: AbstractControl): ValidationErrors | null {
 
   if (pw !== cpw) {
     confirmPasswordControl.setErrors({ mismatch: true });
-    //Istovremeno označavaš i celu formu kao nevalidnu
     return { mismatch: true };
   } else {
-    //Ako je korisnik ispravio lozinku i sada su iste, ti moraš ručno da obrišeš prethodno postavljenu mismatch grešku
     if (confirmPasswordControl.hasError('mismatch')) {
       confirmPasswordControl.setErrors(null);
     }

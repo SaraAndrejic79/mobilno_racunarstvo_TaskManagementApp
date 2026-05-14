@@ -37,7 +37,7 @@
       <div class="progress-bar-bg">
         <div class="progress-bar-fill" [style.width.%]="progressPercent"></div>
       </div>
-      <p class="progress-sub">{{ completedCount }} od {{ totalCount }} taskova završeno</p>
+      <p class="progress-sub">{{ completedCount }} od {{ totalCount }} zadataka završeno</p>
     </div>
 
     <div class="mini-stats">
@@ -91,9 +91,7 @@
         <p>Nema taskova za danas </p>
       </div>
 
-<!--[task]: To je tvoj @Input(). Podaci idu od roditelja ka detetu.
- (onToggle): To je tvoj @Output(). 
- Signal ide od deteta ka roditelju. $event je zapravo onaj Task koji je dete poslalo. -->
+
       <div class="card task-list" *ngIf="todayTasks.length > 0">
         <app-task-card
   *ngFor="let task of todayTasks"

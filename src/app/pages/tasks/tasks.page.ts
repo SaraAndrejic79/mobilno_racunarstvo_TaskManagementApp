@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import {
@@ -26,7 +26,7 @@ import { TaskCardComponent } from '../../components/task-card/task-card.componen
     TaskCardComponent
   ]
 })
-export class TasksPage implements OnInit {
+export class TasksPage  {
 
   allTasks: Task[] = [];
   filteredTasks: Task[] = [];
@@ -51,13 +51,7 @@ export class TasksPage implements OnInit {
     this.calcWeekRange();
   }
 
-  ngOnInit() {
-    this.route.queryParams.subscribe(params => {
-      if (params['filter']) this.selectedFilter = params['filter'];
-      if (params['start']) this.weekStart = params['start'];
-      if (params['end']) this.weekEnd = params['end'];
-    });
-  }
+
 
   ionViewWillEnter() {
     this.route.queryParams.subscribe(params => {
@@ -68,15 +62,18 @@ export class TasksPage implements OnInit {
     this.loadData();
   }
 
-  calcWeekRange() {
-    const today = new Date();
-    const start = new Date(today);
-    start.setDate(today.getDate() - today.getDay() + 1);
-    const end = new Date(start);
-    end.setDate(start.getDate() + 6);
-    this.weekStart = start.toISOString().split('T')[0];
-    this.weekEnd = end.toISOString().split('T')[0];
-  }
+ calcWeekRange() {
+  const today = new Date();
+  const mondayOffset = today.getDay() === 0 ? 6 : today.getDay() - 1;
+  
+  const start = new Date(today);
+  start.setDate(today.getDate() - mondayOffset);
+  const end = new Date(start);
+  end.setDate(start.getDate() + 6);
+  
+  this.weekStart = start.toISOString().split('T')[0];
+  this.weekEnd = end.toISOString().split('T')[0];
+}
 
   loadData() {
     this.isLoading = true;
@@ -97,22 +94,11 @@ export class TasksPage implements OnInit {
     this.categoryService.getCategories().subscribe({
       next: (cats) => { this.categories = cats; },
       error: () => {
-        // Kategorije nisu kritične za prikaz — tiho ignorišemo
         this.categories = [];
       }
     });
   }
 
-  selectFilter(filter: string) {
-    this.selectedFilter = filter;
-    if (filter === 'Nedelja') this.calcWeekRange();
-    this.applyFilter();
-  }
-
-  selectCategory(cat: string) {
-    this.selectedCategory = cat;
-    this.applyFilter();
-  }
 
   applyFilter() {
     const today = new Date().toISOString().split('T')[0];
@@ -143,6 +129,17 @@ export class TasksPage implements OnInit {
     }
 
     this.filteredTasks = tasks;
+  }
+
+  selectFilter(filter: string) {
+    this.selectedFilter = filter;
+    if (filter === 'Nedelja') this.calcWeekRange();
+    this.applyFilter();
+  }
+
+  selectCategory(cat: string) {
+    this.selectedCategory = cat;
+    this.applyFilter();
   }
 
   toggleTask(task: Task) {
@@ -187,7 +184,6 @@ export class TasksPage implements OnInit {
   }
 
   editTask(task: Task) {
-    // Prosleđujemo 'from' da se zna gde da se vrati
     this.router.navigate(['/add-task', task.id], { queryParams: { from: '/tasks' } });
   }
 
