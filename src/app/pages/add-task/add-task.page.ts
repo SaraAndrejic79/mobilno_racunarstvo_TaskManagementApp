@@ -49,7 +49,14 @@ export class AddTaskPage implements OnInit {
   ];
 
 
+  categoriesLimit = 12;
 
+get categoriesVisible() {
+  return this.categories.slice(0, this.categoriesLimit);
+}
+
+showMoreCategories() { this.categoriesLimit += 12; }
+showLessCategories() { this.categoriesLimit = 12; }
   private returnUrl = '/tasks';
 
   constructor(

@@ -85,7 +85,6 @@ export class CalendarPage  {
     const today = new Date().toISOString().split('T')[0];
 
     const firstDay = new Date(this.currentYear, this.currentMonth, 1);
-    //Ako staviš 0 kao dan, JavaScript će te vratiti jedan dan unazad od prvog dana sledećeg meseca.
     const lastDay = new Date(this.currentYear, this.currentMonth + 1, 0);
 
     let startDow = firstDay.getDay();

@@ -267,3 +267,37 @@ ion-content {
     background: rgba(255, 143, 163, 0.1);
   }
 }
+.global-tasks-btn {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  background: #111;
+  border: 1px solid rgba(255, 143, 163, 0.35);
+  border-radius: 14px;
+  padding: 14px 16px;
+  cursor: pointer;
+  transition: background 0.2s;
+
+  &:active {
+    background: rgba(255, 143, 163, 0.08);
+  }
+}
+
+
+.global-tasks-info {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+}
+
+.global-tasks-title {
+  font-size: 14px;
+  font-weight: 600;
+  color: #c9c1c1;
+}
+
+.global-tasks-sub {
+  font-size: 11px;
+  color: #555;
+}

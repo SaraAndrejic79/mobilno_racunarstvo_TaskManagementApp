@@ -1,8 +1,13 @@
 import { Routes } from '@angular/router';
 import { authGuard } from './guards/auth-guard';
 
+
 export const routes: Routes = [
-  { path: '', redirectTo: 'login', pathMatch: 'full' },
+  { path: '', redirectTo: 'landing', pathMatch: 'full' },
+  {
+    path: 'landing',
+    loadComponent: () => import('./pages/landing/landing.page').then(m => m.LandingPage)
+  },
   {
     path: 'register',
     loadComponent: () => import('./pages/register/register.page').then(m => m.RegisterPage)
@@ -44,6 +49,16 @@ export const routes: Routes = [
   {
     path: 'calendar',
     loadComponent: () => import('./pages/calendar/calendar.page').then(m => m.CalendarPage),
+    canActivate: [authGuard]
+  },
+  {
+    path: 'global-tasks',
+    loadComponent: () => import('./pages/global-tasks/global-tasks.page').then(m => m.GlobalTasksPage),
+    canActivate: [authGuard]
+  },
+  {
+    path: 'global-task/:id',
+    loadComponent: () => import('./pages/global-task-detail/global-task-detail.page').then(m => m.GlobalTaskDetailPage),
     canActivate: [authGuard]
   },
 ];

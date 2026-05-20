@@ -16,110 +16,181 @@
       <p class="profile-email">{{ userEmail }}</p>
     </div>
 
-<div class="info-card">
-  <div class="card-title">Informacije o nalogu</div>
-   <div class="info-row">
-    <span class="info-label">Ime</span>
-    <div style="display:flex; align-items:center; gap:8px;">
-    <span class="info-value">{{ userName }}</span>
-    <span class="edit-email-btn" (click)="toggleEditName()">✎</span>
-  </div>
-  </div>
+    <div class="info-card">
+      <div class="card-title">Informacije o nalogu</div>
+      <div class="info-row">
+        <span class="info-label">Ime</span>
+        <div style="display:flex; align-items:center; gap:8px;">
+          <span class="info-value">{{ userName }}</span>
+          <span class="edit-email-btn" (click)="toggleEditName()">✎</span>
+        </div>
+      </div>
 
-<div class="edit-email-form" *ngIf="showEditName">
-  <ion-input
-    [(ngModel)]="newName"
-    type="text"
-    placeholder="Novo ime..."
-    class="custom-input"
-  ></ion-input>
-  <div class="email-error" *ngIf="nameError">{{ nameError }}</div>
-  <div class="email-actions">
-    <div class="btn-cancel-small" (click)="toggleEditName()">Otkaži</div>
-    <div class="btn-save-small" (click)="updateName()">
-      <ion-spinner *ngIf="nameLoading" name="crescent" style="width:16px;height:16px;"></ion-spinner>
-      <span *ngIf="!nameLoading">Sačuvaj</span>
-    </div>
-  </div>
-</div>
+      <div class="edit-email-form" *ngIf="showEditName">
+        <ion-input [(ngModel)]="newName" type="text" placeholder="Novo ime..." class="custom-input"></ion-input>
+        <div class="email-error" *ngIf="nameError">{{ nameError }}</div>
+        <div class="email-actions">
+          <div class="btn-cancel-small" (click)="toggleEditName()">Otkaži</div>
+          <div class="btn-save-small" (click)="updateName()">
+            <ion-spinner *ngIf="nameLoading" name="crescent" style="width:16px;height:16px;"></ion-spinner>
+            <span *ngIf="!nameLoading">Sačuvaj</span>
+          </div>
+        </div>
+      </div>
 
-  <div class="info-row">
-    <span class="info-label">Email</span>
-    <div style="display:flex; align-items:center; gap:8px;">
-      <span class="info-value">{{ userEmail }}</span>
-      <span class="edit-email-btn" (click)="toggleEditEmail()">✎</span>
-    </div>
-  </div>
+      <div class="info-row">
+        <span class="info-label">Email</span>
+        <div style="display:flex; align-items:center; gap:8px;">
+          <span class="info-value">{{ userEmail }}</span>
+          <span class="edit-email-btn" (click)="toggleEditEmail()">✎</span>
+        </div>
+      </div>
 
-  <div class="edit-email-form" *ngIf="showEditEmail">
-    <ion-input
-      [(ngModel)]="newEmail"
-      type="email"
-      placeholder="Novi email..."
-      class="custom-input"
-    ></ion-input>
-    <div class="email-error" *ngIf="emailError">{{ emailError }}</div>
-    <div class="email-actions">
-      <div class="btn-cancel-small" (click)="toggleEditEmail()">Otkaži</div>
-      <div class="btn-save-small" (click)="updateEmail()">
-        <ion-spinner *ngIf="emailLoading" name="crescent" style="width:16px;height:16px;"></ion-spinner>
-        <span *ngIf="!emailLoading">Sačuvaj</span>
+      <div class="edit-email-form" *ngIf="showEditEmail">
+        <ion-input [(ngModel)]="newEmail" type="email" placeholder="Novi email..." class="custom-input"></ion-input>
+        <div class="email-error" *ngIf="emailError">{{ emailError }}</div>
+        <div class="email-actions">
+          <div class="btn-cancel-small" (click)="toggleEditEmail()">Otkaži</div>
+          <div class="btn-save-small" (click)="updateEmail()">
+            <ion-spinner *ngIf="emailLoading" name="crescent" style="width:16px;height:16px;"></ion-spinner>
+            <span *ngIf="!emailLoading">Sačuvaj</span>
+          </div>
+        </div>
       </div>
     </div>
-  </div>
-</div>
 
-
-<div class="card" *ngIf="needsReauth" style="border: 1px solid #ff8fa3;">
-  <div class="card-title" style="color: #ff8fa3;">Potrebna verifikacija</div>
-  <p class="reset-desc">Unesite vašu trenutnu lozinku kako biste potvrdili izmenu email-a.</p>
-  
-  <ion-input
-    [(ngModel)]="currentPassword"
-    type="password"
-    placeholder="Vaša lozinka..."
-    class="custom-input"
-  ></ion-input>
-
-  <div class="email-actions" style="margin-top: 10px;">
-    <div class="btn-cancel-small" (click)="needsReauth = false">Otkaži</div>
-    <div class="btn-save-small" (click)="reauthenticateAndSave()">
-      <ion-spinner *ngIf="reauthLoading" name="crescent" style="width:16px;height:16px;"></ion-spinner>
-      <span *ngIf="!reauthLoading">Potvrdi</span>
+    <div class="card" *ngIf="needsReauth" style="border: 1px solid #ff8fa3;">
+      <div class="card-title" style="color: #ff8fa3;">Potrebna verifikacija</div>
+      <p class="reset-desc">Unesite vašu trenutnu lozinku kako biste potvrdili izmenu email-a.</p>
+      <ion-input [(ngModel)]="currentPassword" type="password" placeholder="Vaša lozinka..." class="custom-input"></ion-input>
+      <div class="email-actions" style="margin-top: 10px;">
+        <div class="btn-cancel-small" (click)="needsReauth = false">Otkaži</div>
+        <div class="btn-save-small" (click)="reauthenticateAndSave()">
+          <ion-spinner *ngIf="reauthLoading" name="crescent" style="width:16px;height:16px;"></ion-spinner>
+          <span *ngIf="!reauthLoading">Potvrdi</span>
+        </div>
+      </div>
+      <div class="email-error" *ngIf="reauthError" style="margin-top: 5px;">{{ reauthError }}</div>
     </div>
-  </div>
-  <div class="email-error" *ngIf="reauthError" style="margin-top: 5px;">{{ reauthError }}</div>
-</div>
 
     <div class="card">
       <div class="card-title">Bezbednost</div>
-      <p class="reset-desc">
-        Klikni dugme ispod da dobiješ email sa linkom za resetovanje lozinke.
-      </p>
-
-      <div class="success-msg" *ngIf="resetSent">
-        ✓ Email je poslat na {{ userEmail }}
-      </div>
-
-      <div class="error-msg" *ngIf="resetError">
-        {{ resetError }}
-      </div>
-
-      <ion-button
-        expand="block"
-        class="btn-reset"
-        (click)="sendPasswordReset()"
-        [disabled]="resetLoading || resetSent"
-      >
+      <p class="reset-desc">Klikni dugme ispod da dobiješ email sa linkom za resetovanje lozinke.</p>
+      <div class="success-msg" *ngIf="resetSent">✓ Email je poslat na {{ userEmail }}</div>
+      <div class="error-msg" *ngIf="resetError">{{ resetError }}</div>
+      <ion-button expand="block" class="btn-reset" (click)="sendPasswordReset()" [disabled]="resetLoading || resetSent">
         <ion-spinner *ngIf="resetLoading" name="crescent"></ion-spinner>
-        <span *ngIf="!resetLoading">
-          {{ resetSent ? 'Email poslat ✓' : 'Pošalji link za reset lozinke' }}
-        </span>
+        <span *ngIf="!resetLoading">{{ resetSent ? 'Email poslat ✓' : 'Pošalji link za reset lozinke' }}</span>
       </ion-button>
     </div>
-    <div class="logout-btn" (click)="logout()">
-      Odjavi se
+
+<div class="card">
+  <div class="card-title">Moji komentari</div>
+
+  <div *ngIf="myCommentsLoading" class="spinner-wrap">
+    <ion-spinner name="crescent" color="primary"></ion-spinner>
+  </div>
+
+  <div *ngIf="!myCommentsLoading && myComments.length === 0" class="empty-saved">
+    <p>Još nisi napisao/la nijedan komentar.</p>
+    <span class="go-link" (click)="goToGlobalTasks()">Istraži zajedničke zadatke →</span>
+  </div>
+
+  <div class="saved-comment-card" *ngFor="let item of myCommentsVisible">
+    <div class="saved-header">
+      <div class="saved-avatar">{{ item.comment.userName.charAt(0).toUpperCase() }}</div>
+      <div class="saved-meta">
+        <span class="saved-author">Ti</span>
+        <span class="saved-task-label">na: {{ item.taskTitle }}</span>
+      </div>
+      <div class="my-actions">
+        <button class="action-btn" (click)="startEdit(item)" 
+                *ngIf="editingCommentId !== item.comment.id">
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" 
+               stroke="#888" stroke-width="1.5">
+            <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/>
+            <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/>
+          </svg>
+        </button>
+        <button class="unsave-btn" (click)="deleteMyComment(item)"
+                *ngIf="editingCommentId !== item.comment.id">
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" 
+               stroke="#ff6060" stroke-width="1.5">
+            <polyline points="3 6 5 6 21 6"/>
+            <path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"/>
+          </svg>
+        </button>
+      </div>
     </div>
+
+    <p class="saved-text" *ngIf="editingCommentId !== item.comment.id">
+      {{ item.comment.text }}
+    </p>
+
+    <div class="edit-form" *ngIf="editingCommentId === item.comment.id">
+      <ion-textarea class="edit-input" [(ngModel)]="editingText" rows="2">
+      </ion-textarea>
+      <div class="edit-actions">
+        <button class="btn-cancel-small" (click)="cancelEdit()">Otkaži</button>
+        <button class="btn-save-small" (click)="saveEdit(item)">Sačuvaj</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="pagination-btns" *ngIf="myComments.length > 5">
+    <span class="go-link" *ngIf="myCommentsLimit < myComments.length" 
+          (click)="showMoreMy()">
+      Prikaži još ({{ myComments.length - myCommentsLimit }})
+    </span>
+    <span class="go-link" *ngIf="myCommentsLimit > 5" 
+          (click)="showLessMy()">
+      Prikaži manje
+    </span>
+  </div>
+</div>
+
+    <div class="card">
+  <div class="card-title">Sačuvani komentari</div>
+
+  <div *ngIf="savedCommentsLoading" class="spinner-wrap">
+    <ion-spinner name="crescent" color="primary"></ion-spinner>
+  </div>
+
+  <div *ngIf="!savedCommentsLoading && savedComments.length === 0" class="empty-saved">
+    <p>Još nisi sačuvao/la nijedan komentar.</p>
+    <span class="go-link" (click)="goToGlobalTasks()">Istraži zajedničke zadatke →</span>
+  </div>
+
+  <div class="saved-comment-card" *ngFor="let item of savedCommentsVisible">
+    <div class="saved-header">
+      <div class="saved-avatar">{{ item.comment.userName.charAt(0).toUpperCase() }}</div>
+      <div class="saved-meta">
+        <span class="saved-author">{{ item.comment.userName }}</span>
+        <span class="saved-task-label">iz: {{ item.taskTitle }}</span>
+      </div>
+      <button class="unsave-btn" (click)="removeSavedComment(item)">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" 
+             stroke="#ff6060" stroke-width="1.5">
+          <line x1="18" y1="6" x2="6" y2="18"/>
+          <line x1="6" y1="6" x2="18" y2="18"/>
+        </svg>
+      </button>
+    </div>
+    <p class="saved-text">{{ item.comment.text }}</p>
+  </div>
+
+  <div class="pagination-btns" *ngIf="savedComments.length > 5">
+    <span class="go-link" *ngIf="savedCommentsLimit < savedComments.length" 
+          (click)="showMoreSaved()">
+      Prikaži još ({{ savedComments.length - savedCommentsLimit }})
+    </span>
+    <span class="go-link" *ngIf="savedCommentsLimit > 5" 
+          (click)="showLessSaved()">
+      Prikaži manje
+    </span>
+  </div>
+</div>
+    <div class="logout-btn" (click)="logout()">Odjavi se</div>
 
   </div>
 </ion-content>
@@ -129,5 +200,5 @@
   header="Odjava"
   message="Da li zaista želiš da se odjaviš?"
   [buttons]="alertButtons"
-  (didDismiss)="showLogoutAlert = false"
-></ion-alert>
+  (didDismiss)="showLogoutAlert = false">
+</ion-alert>

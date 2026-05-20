@@ -213,4 +213,6 @@ export class DashboardPage implements OnInit {
     }
   });
 }
+
+goToGlobalTasks() { this.router.navigate(['/global-tasks']); }
 }

@@ -1,0 +1,115 @@
+$neon-pink: #ff8fa3;
+$dark-bg: #0e0e0e;
+
+ion-content {
+  --padding-top: 0; --padding-bottom: 0;
+  --padding-start: 0; --padding-end: 0;
+}
+
+.landing-container {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  background-color: $dark-bg;
+  padding: 3rem 1.5rem 2rem;
+  align-items: center;
+}
+
+.logo-block {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-bottom: 2rem;
+}
+
+@keyframes pulseGlow {
+  0% { filter: drop-shadow(0 0 5px #ff8fa3) drop-shadow(0 0 10px #ff8fa3); }
+  50% { filter: drop-shadow(0 0 15px #ff4f7a) drop-shadow(0 0 25px #ff4f7a); }
+  100% { filter: drop-shadow(0 0 5px #ff8fa3) drop-shadow(0 0 10px #ff8fa3); }
+}
+
+.logo-img {
+  width: 12rem;
+  height: 12rem;
+  margin-bottom: 0.5rem;
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+  animation: pulseGlow 2.5s infinite ease-in-out;
+}
+
+.app-name {
+  font-size: 28px; font-weight: 700;
+  color: #fff; margin: 0;
+}
+
+.app-sub {
+  font-size: 13px; color: #888; margin: 6px 0 0;
+}
+
+.section-label {
+  font-size: 11px; font-weight: 600;
+  color: #666; text-transform: uppercase;
+  letter-spacing: 0.08em;
+  align-self: flex-start;
+  margin-bottom: 10px; width: 100%;
+}
+
+.spinner-wrap {
+  display: flex; justify-content: center; padding: 2rem 0;
+}
+
+.tasks-preview {
+  width: 100%;
+  display: flex; flex-direction: column; gap: 10px;
+  margin-bottom: 1rem;
+}
+
+.preview-card {
+  display: flex; align-items: center; gap: 12px;
+  background: rgba(255, 143, 163, 0.05);
+  border: 1px solid rgba(255, 143, 163, 0.15);
+  border-radius: 12px; padding: 14px;
+}
+
+.preview-icon {
+  width: 36px; height: 36px;
+  background: rgba(255, 143, 163, 0.1);
+  border-radius: 8px;
+  display: flex; align-items: center; justify-content: center;
+  flex-shrink: 0;
+}
+
+.preview-info { flex: 1; }
+
+.preview-title {
+  font-size: 14px; font-weight: 600; color: #fff; margin-bottom: 2px;
+}
+
+.preview-desc {
+  font-size: 12px; color: #666; line-height: 1.4;
+}
+
+.login-hint {
+  font-size: 12px; color: #555;
+  text-align: center; margin: 0.5rem 0 1.5rem;
+}
+
+.auth-buttons {
+  width: 100%;
+  display: flex; flex-direction: column; gap: 10px;
+  margin-top: auto; padding-top: 1rem;
+}
+
+.btn-primary {
+  --background: transparent; --color: #{$neon-pink};
+  --border-color: #{$neon-pink}; --border-style: solid;
+  --border-width: 1px; --border-radius: 10px;
+  font-weight: 600;
+}
+
+.btn-secondary {
+  --background: rgba(255, 143, 163, 0.08);
+  --color: #fff; --border-radius: 10px;
+  font-weight: 600;
+}

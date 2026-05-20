@@ -92,7 +92,7 @@
         <label class="form-label">Kategorija</label>
        <div class="category-chips">
   <div
-    *ngFor="let cat of categories"
+    *ngFor="let cat of  categoriesVisible"
     class="chip"
     [class.active]="selectedCategory?.id === cat.id"
     [style.border-color]="selectedCategory?.id === cat.id ? cat.color : ''"
@@ -130,6 +130,19 @@
           </div>
         </div>
       </div>
+
+      <div class="pagination-btns" *ngIf="categories.length > 12">
+  <span class="show-more" 
+        *ngIf="categoriesLimit < categories.length"
+        (click)="showMoreCategories()">
+    Prikaži još ({{ categories.length - categoriesLimit }})
+  </span>
+  <span class="show-more"
+        *ngIf="categoriesLimit > 12"
+        (click)="showLessCategories()">
+    Prikaži manje
+  </span>
+</div>
 
       <div class="error-banner" *ngIf="errorMsg">{{ errorMsg }}</div>
 

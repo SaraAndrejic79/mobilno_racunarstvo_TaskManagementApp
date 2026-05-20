@@ -1,0 +1,56 @@
+<ion-content>
+  <div class="landing-container">
+
+    <div class="logo-block">
+      <img src="assets/logo.png" class="logo-img" alt="Taskly logo" />
+      <h1 class="app-name">Taskly</h1>
+      <p class="app-sub">Organizuj dan. Podeli iskustvo.</p>
+    </div>
+
+    <div class="section-label">Zajednički zadaci</div>
+
+    <div *ngIf="isLoading" class="spinner-wrap">
+      <ion-spinner name="crescent" color="primary"></ion-spinner>
+    </div>
+
+    <div class="tasks-preview" *ngIf="!isLoading">
+      <div class="preview-card" *ngFor="let task of globalTasks">
+        <div class="preview-icon">
+          <svg *ngIf="task.icon === 'calendar-outline'" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#ff8fa3" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+            <rect x="3" y="4" width="18" height="18" rx="3"/><line x1="3" y1="9" x2="21" y2="9"/>
+            <line x1="8" y1="2" x2="8" y2="6"/><line x1="16" y1="2" x2="16" y2="6"/>
+          </svg>
+          <svg *ngIf="task.icon === 'sunny-outline'" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#ff8fa3" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="12" cy="12" r="4"/>
+            <line x1="12" y1="2" x2="12" y2="5"/><line x1="12" y1="19" x2="12" y2="22"/>
+            <line x1="4.22" y1="4.22" x2="6.34" y2="6.34"/><line x1="17.66" y1="17.66" x2="19.78" y2="19.78"/>
+            <line x1="2" y1="12" x2="5" y2="12"/><line x1="19" y1="12" x2="22" y2="12"/>
+          </svg>
+          <svg *ngIf="task.icon === 'checkmark-circle-outline'" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#ff8fa3" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="12" cy="12" r="9"/><polyline points="9 12 11 14 15 10"/>
+          </svg>
+        </div>
+        <div class="preview-info">
+          <div class="preview-title">{{ task.title }}</div>
+          <div class="preview-desc">{{ task.description }}</div>
+        </div>
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#555" stroke-width="1.5">
+          <rect x="3" y="11" width="18" height="11" rx="2"/>
+          <path d="M7 11V7a5 5 0 0 1 10 0v4"/>
+        </svg>
+      </div>
+    </div>
+
+    <p class="login-hint">Prijavi se da vidiš komentare i učestvuješ</p>
+
+    <div class="auth-buttons">
+      <ion-button class="btn-primary" expand="block" (click)="goToLogin()">
+        Prijavi se
+      </ion-button>
+      <ion-button class="btn-secondary" expand="block" (click)="goToRegister()">
+        Registruj se
+      </ion-button>
+    </div>
+
+  </div>
+</ion-content>

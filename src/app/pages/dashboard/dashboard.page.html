@@ -39,7 +39,7 @@
       </div>
       <p class="progress-sub">{{ completedCount }} od {{ totalCount }} zadataka završeno</p>
     </div>
-
+    
     <div class="mini-stats">
       <div class="stat-box" (click)="goToTasks('Završeni')"> 
         <span class="stat-num green">{{ completedCount }}</span>
@@ -60,6 +60,19 @@
   <span class="stat-num blue">{{ weekCount }}</span>
   <span class="stat-lbl">Ova nedelja</span>
 </div>
+</div>
+
+<div class="section">
+  <div class="section-header">
+    <span class="section-title">Zajednički zadaci</span>
+  </div>
+  <div class="global-tasks-btn" (click)="goToGlobalTasks()">
+    <div class="global-tasks-info">
+      <span class="global-tasks-title">Istraži zajedničke zadatke</span>
+      <span class="global-tasks-sub">Komentariši, deli iskustvo</span>
+    </div>
+    <span class="see-all">→</span>
+  </div>
 </div>
 
     <div class="section">
